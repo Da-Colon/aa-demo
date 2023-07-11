@@ -36,6 +36,7 @@
 	footer {
 		color: var(--color-gray-700);
 		font-weight: lighter;
+		text-align: center;
 	}
 	
 	footer div {
