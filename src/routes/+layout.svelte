@@ -11,7 +11,7 @@
 	</main>
 
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<div>Study the science of art. Study the art of science. Develop your senses - especially learn how to see. Realize that everything connects to everything else. -- Leonardo da Vinci </div>
 	</footer>
 </div>
 
@@ -34,15 +34,12 @@
 	}
 
 	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
+		color: var(--color-gray-700);
+		font-weight: lighter;
 	}
-
-	footer a {
-		font-weight: bold;
+	
+	footer div {
+		padding: 0.5rem 2rem;
 	}
 
 	@media (min-width: 480px) {

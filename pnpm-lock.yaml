@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@fontsource/fira-mono': ^4.5.10
+  '@fontsource/lakki-reddy': ^5.0.5
   '@neoconfetti/svelte': ^1.0.0
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.20.4
@@ -21,6 +22,7 @@ specifiers:
 
 devDependencies:
   '@fontsource/fira-mono': 4.5.10
+  '@fontsource/lakki-reddy': 5.0.5
   '@neoconfetti/svelte': 1.0.0
   '@sveltejs/adapter-auto': 2.1.0_@sveltejs+kit@1.22.1
   '@sveltejs/kit': 1.22.1_svelte@4.0.5+vite@4.4.2
@@ -290,6 +292,10 @@ packages:
 
   /@fontsource/fira-mono/4.5.10:
     resolution: {integrity: sha512-bxUnRP8xptGRo8YXeY073DSpfK74XpSb0ZyRNpHV9WvLnJ7TwPOjZll8hTMin7zLC6iOp59pDZ8EQDj1gzgAQQ==}
+    dev: true
+
+  /@fontsource/lakki-reddy/5.0.5:
+    resolution: {integrity: sha512-2vNicd6Tosn0kk9Ow2hbcPI87ELYQVYnJa6u72J3uuG1O63k3o/6xkk3R1FDsa4OdxbdCpkvcZdjRv2SbAPrnQ==}
     dev: true
 
   /@humanwhocodes/config-array/0.11.10:
