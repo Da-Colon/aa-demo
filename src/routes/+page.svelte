@@ -1,4 +1,6 @@
 <script>
+	import Container from "$lib/components/Container.svelte";
+
 
 </script>
 
@@ -8,7 +10,9 @@
 </svelte:head>
 
 <section>
-	
+	<Container>
+		Home
+	</Container>
 </section>
 
 <style>

@@ -45,8 +45,9 @@
   --color-green-700: #00CC00;
   --color-green-800: #00B300;
   --color-green-900: #009900;
-  --color-wallet-green: #00ff00;
-  --color-wallet-green-dark: #004d00;
+  --color-green-900-faded: rgba(0, 152, 69, 0.5);
+  --color-wallet-green: #00FF55;
+  --color-wallet-green-dark: rgb(0, 187, 68);
 
   /* Grayscales */
   --color-white: #FFFFFF;
