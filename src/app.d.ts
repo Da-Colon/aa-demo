@@ -9,4 +9,8 @@ declare global {
 	}
 }
 
+declare module '$env/static/private' {
+  export const ALCHEMY_API_KEY: string;
+}
+
 export {};
