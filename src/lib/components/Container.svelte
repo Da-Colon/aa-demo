@@ -8,8 +8,8 @@
 <style>
 section.container {
   padding: 2rem;
-  width: 325px;
-  height: 200px;
+  max-width: 600px;
+  min-height: 200px;
   background-image: var(--color-black);
   box-shadow: 
     0px 4px 6px var(--color-green-900-faded),

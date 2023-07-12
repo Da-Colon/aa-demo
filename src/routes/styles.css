@@ -77,3 +77,28 @@ body {
     linear-gradient(180deg, var(--color-black) 0%, var(--color-gray-900) 100%);
   color: var(--color-white); /* Set text color to white for better contrast */
 }
+
+.button-primary {
+  background-color: var(--color-green-900);
+  border: none;
+  color: var(--color-white);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  max-width: 325px;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.flex-row {
+  display: flex;
+  gap: 10px;
+}
