@@ -27,7 +27,8 @@
 	header {
 		display: flex;
 		justify-content: space-between;
-		padding: 20px;
+		padding: 1rem 20px;
+		height: 6rem;
 	}
 
 	.logo {
@@ -41,7 +42,7 @@
 		text-align: center;
 		text-shadow: 0px 1px 10px var(--color-wallet-green);
 	}
-
+	
 	.logo::after {
 		content: attr(data-text);
 		position: absolute;

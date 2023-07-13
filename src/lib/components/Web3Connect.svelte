@@ -43,20 +43,19 @@
 <style>
 	section {
 		display: flex;
-		align-items: center;
 		justify-content: center;
-		padding-bottom: 1rem;
-		width: 325px;
-		height: 100%;
+		align-items: center;
+		height: fit-content;
 		gap: 8px;
 	}
 	.button-web3 {
 		background-color: var(--color-blue-500);
 		border: none;
 		color: var(--color-white);
-		padding: 4px 12px;
 		text-align: center;
 		text-decoration: none;
+		padding: 10px 20px;
+		font-size: 16px;
 		display: inline-block;
 		margin: 4px 2px;
 		cursor: pointer;
@@ -65,6 +64,7 @@
 	.button-web3.red {
 		background-color: var(--color-red-500);
 		color: var(--color-white);
+		padding: 4px 12px;
 	}
 	.address-display {
 		color: var(--color-white);
