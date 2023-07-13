@@ -64,7 +64,7 @@
 
   /* Rest of your CSS */
   font-family: var(--font-body);
-  color: var(--color-text);
+  color: var(--color-white);
 }
 
 body {

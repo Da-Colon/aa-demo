@@ -2,6 +2,7 @@
 	import Container from '$lib/components/Container.svelte';
 	import Mnemonic from '$lib/components/Mnemonic.svelte';
 	import { SmartAccount } from '$lib/components/SmartAccount';
+	import Web3Connect from '$lib/components/Web3Connect.svelte';
 	import type { AccountSigner } from '@alchemy/aa-ethers';
 
 	$: mnemonic = '';
@@ -26,8 +27,8 @@
 		generatedWallet = account.accountSigner!;
 		const jsonPrep = {
 			address: newWalletAddress,
-			mnemonic: mnemonic,
-		}
+			mnemonic: mnemonic
+		};
 		walletAsJson = JSON.stringify(jsonPrep);
 	}
 
@@ -39,7 +40,6 @@
 		a.download = 'smartWallet.json';
 		a.click();
 	}
-
 </script>
 
 <svelte:head>
@@ -51,28 +51,34 @@
 	<Container>
 		{#if !generatedWallet}
 			<div>
-				<Mnemonic updateMnemonic={updateMnemonic} />
+				<Mnemonic {updateMnemonic} />
 			</div>
 			{#if mnemonic}
-				<button on:click={createNewAccount} class="button-primary" >Generate Smart Wallet</button>
+				<button on:click={createNewAccount} class="button-primary">Generate Smart Wallet</button>
 			{/if}
 		{:else}
 			<div class="info">
 				<h1 class="info-title">Wallet generated!</h1>
 				<p class="info-description">Here is your wallet's address:</p>
 				<div class="wallet-address">{newWalletAddress}</div>
-				<button on:click={downloadWallet} class="button-primary" >Download Wallet</button>
+				<button on:click={downloadWallet} class="button-primary">Download Wallet</button>
 			</div>
 		{/if}
+	</Container>
+	<Container>
+		{#if generatedWallet}
+			Let's deploy paymaster using the new wallet!
+		{/if}
+		<Web3Connect />
+
 	</Container>
 </section>
 
 <style>
 	section {
 		display: flex;
-		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		justify-content: space-around;
 		color: var(--color-white);
 	}
 	.button-primary {

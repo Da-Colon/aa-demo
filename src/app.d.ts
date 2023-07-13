@@ -9,8 +9,12 @@ declare global {
 	}
 }
 
-declare module '$env/static/private' {
-  export const ALCHEMY_API_KEY: string;
+
+declare global {
+  interface Window{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ethereum?: any
+  }
 }
 
 export {};

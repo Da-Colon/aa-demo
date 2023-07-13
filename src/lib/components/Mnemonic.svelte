@@ -22,16 +22,14 @@
 
 <div class="flex-col">
 	<h2>Your Mnemonic:</h2>
-	<div class="flex-row">
 		<div class="mnemonic-container">
 			{#each mnemonic.split(' ') as word (word)}
 				<div class="mnemonic-word">{word}</div>
 			{/each}
 		</div>
-		<button class="button-primary" on:click={generateMnemonic}>
-			<img src={reloadIcon} alt="Reload Icon" />
-		</button>
-	</div>
+	<button class="button-primary" on:click={generateMnemonic}>
+		<img src={reloadIcon} alt="Reload Icon" />
+	</button>
 </div>
 
 <style>
@@ -43,13 +41,17 @@
 	}
 	.mnemonic-container {
 		display: flex;
+		flex-direction: column;
 		flex-wrap: wrap;
 		gap: 10px;
-		justify-content: center;
+		height: 325px;
+		justify-content: space-around;
+		align-items: center;
 	}
 	.mnemonic-word {
 		background: var(--color-gray-100);
 		padding: 10px;
+		width: 100px;
 		border-radius: 8px;
 		color: var(--color-black);
 		font-family: var(--font-mono);
