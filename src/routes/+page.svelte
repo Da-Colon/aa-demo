@@ -69,8 +69,6 @@
 		{#if generatedWallet}
 			Let's deploy paymaster using the new wallet!
 		{/if}
-		<Web3Connect />
-
 	</Container>
 </section>
 

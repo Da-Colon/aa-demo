@@ -1,4 +1,6 @@
 <script>
+	import Web3Connect from "$lib/components/Web3Connect.svelte";
+
 	let logoText = 'Mako Wallet';
 </script>
 
@@ -6,6 +8,7 @@
 	<div class="logo" data-text={logoText}>
 		{logoText}
 	</div>
+	<Web3Connect />
 </header>
 
 <style>
@@ -23,7 +26,7 @@
 
 	header {
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		padding: 20px;
 	}
 

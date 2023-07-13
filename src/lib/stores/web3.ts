@@ -38,8 +38,16 @@ function createWeb3Store() {
           });
 
           window.ethereum.on('chainChanged', async () => {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
             const network = await provider.getNetwork();
-            update(state => ({ ...state, provider: new ethers.providers.Web3Provider(window.ethereum), network: network }));
+          
+            update(state => ({
+              ...state, 
+              provider: provider, 
+              signer: signer,
+              network: network 
+            }));
           });
         } else {
           console.error("Unable to get accounts. User denied permission?");
