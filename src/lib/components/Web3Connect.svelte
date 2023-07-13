@@ -3,6 +3,7 @@
   import { web3 } from '$lib/stores/web3';
   import type { Web3Store } from '$lib/types';
 	import { ethers } from 'ethers';
+	import { truncateAddress } from '$lib/utils/string';
 
   let state: Web3Store;
 
@@ -30,17 +31,24 @@
 </script>
 
 
-<div>
+<section>
 		{#if state.isConnected && state.address && state.network}
-			<p class="address-display">{state.network.name}:{state.address}</p>
-			<button class="button-web3" on:click={disconnect}>Disconnect</button>
+			<p class="address-display">{state.network.name}:{truncateAddress(state.address)}</p>
+			<button class="button-web3 red" on:click={disconnect}>Disconnect</button>
 		{:else}
 			<button class="button-web3" on:click={connect}>Connect</button>
 		{/if}
-</div>
+</section>
 
 
 <style>
+	section {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 1rem;
+	}
 	.button-web3 {
 		background-color: var(--color-blue-500);
 		border: none;
@@ -53,6 +61,10 @@
 		margin: 4px 2px;
 		cursor: pointer;
 		border-radius: 3px;
+	}
+	.button-web3.red {
+		background-color: var(--color-red-500);
+		color: var(--color-white);
 	}
 	.address-display {
 		color: var(--color-white);
