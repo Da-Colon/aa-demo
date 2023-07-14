@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Container from '$lib/components/Container.svelte';
-	import { web3 } from '$lib/stores/web3';
+	import { BASE_ENTRYPOINT_ADDRESS, web3 } from '$lib/stores/web3';
 	import type { Web3Store } from '$lib/types';
-	import { withAlchemyGasManager } from '@alchemy/aa-alchemy'
+	import { alchemyPaymasterAndDataMiddleware } from '@alchemy/aa-alchemy';
 	let state: Web3Store;
 
 	web3.subscribe((value) => {
@@ -12,17 +12,34 @@
 	// mint nft
 	async function mintNFT() {
 		// mint nft
-		if(!state.signer || !state.provider || !state.alchemy) return console.log('no signer');
-		// state.signer.withPaymasterMiddleware(
-		// 	withAlchemyGasManager(state.signer, state.alchemy.config)
-		// );
 	}
 	// mint nft with paymaster
-	function mintNFTWithPaymaster() {
+	function mintNFTWithERC20GasPayment() {
+		if (!state.signer || !state.provider || !state.alchemy || !state.adapter)
+			return console.log('no signer');
+		const client = state.signer.getPublicErc4337Client();
+		const withPaymaster = state.signer.withPaymasterMiddleware(
+			alchemyPaymasterAndDataMiddleware({
+				provider: client,
+				policyId: '',
+				entryPoint: BASE_ENTRYPOINT_ADDRESS
+			})
+		);
 		// mint nft
 	}
+	
 	// mint nft with gas sponsor
 	function mintNFTWithGasSponsor() {
+		if (!state.signer || !state.provider || !state.alchemy || !state.adapter)
+			return console.log('no signer');
+		const client = state.signer.getPublicErc4337Client();
+		const withPaymaster = state.signer.withPaymasterMiddleware(
+			alchemyPaymasterAndDataMiddleware({
+				provider: client,
+				policyId: '',
+				entryPoint: BASE_ENTRYPOINT_ADDRESS
+			})
+		);
 		// mint nft
 	}
 </script>

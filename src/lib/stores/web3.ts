@@ -8,9 +8,9 @@ import { Alchemy, Network, type AlchemyProvider } from 'alchemy-sdk';
 // Alchemy API key for the application
 const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY;
 // https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
-const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454";
+export const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454";
 // https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/core/EntryPoint.sol
-const BASE_ENTRYPOINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+export const BASE_ENTRYPOINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
 
 /**
  * Creates an account signer and obtains the network details.
@@ -27,7 +27,7 @@ const createAccountSigner = async (signer: Signer, alchemyProvider: AlchemyProvi
     alchemyProvider,
     BASE_ENTRYPOINT_ADDRESS
   );
-  
+
 
   // Connect the adapter to the account to create the account signer
   const accountSigner = adapter.connectToAccount(
@@ -40,7 +40,7 @@ const createAccountSigner = async (signer: Signer, alchemyProvider: AlchemyProvi
         rpcClient,
       })
   );
-  return { accountSigner, network };
+  return { accountSigner, network, adapter };
 };
 
 /**
@@ -56,6 +56,7 @@ function createWeb3Store() {
     address: null,
     network: null,
     alchemy: null,
+    adapter: null,
   });
 
   return {
@@ -83,8 +84,8 @@ function createWeb3Store() {
           const signer = provider.getSigner();
 
           // Create the account signer and obtain the network
-          const { accountSigner, network } = await createAccountSigner(signer, alchemyProvider);
-
+          const { accountSigner, network, adapter } = await createAccountSigner(signer, alchemyProvider);
+  
           // Obtain the address from the signer
           const address = await signer.getAddress();
 
@@ -96,6 +97,7 @@ function createWeb3Store() {
             address: address,
             network: network,  // Set the network field
             alchemy: alchemy,  // Set the alchemy field
+            adapter: adapter,  // Set the adapter field
           });
 
           // Update the address in the web3 store when the accounts change
@@ -124,6 +126,7 @@ function createWeb3Store() {
         address: null,
         network: null,
         alchemy: null,
+        adapter: null,
       });
     },
   };
