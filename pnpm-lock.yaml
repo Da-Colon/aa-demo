@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@alchemy/aa-alchemy': 0.1.0-alpha.16
   '@alchemy/aa-core': 0.1.0-alpha.16
   '@alchemy/aa-ethers': 0.1.0-alpha.16
   '@fontsource/fira-mono': ^4.5.10
@@ -26,6 +27,7 @@ specifiers:
   vite: ^4.3.6
 
 dependencies:
+  '@alchemy/aa-alchemy': 0.1.0-alpha.16_pv3vqcccpuzturxvtuh44prg34
   '@alchemy/aa-core': 0.1.0-alpha.16_xvpaqkxaoj2ltolmug63j4h2hi
   '@alchemy/aa-ethers': 0.1.0-alpha.16_g7refhtbwgztln7gjzgyseglwm
   alchemy-sdk: 2.9.2
@@ -61,6 +63,16 @@ packages:
 
   /@adraffy/ens-normalize/1.9.0:
     resolution: {integrity: sha512-iowxq3U30sghZotgl4s/oJRci6WPBfNO5YYgk2cIOMCHr3LeGPcsZjCEr+33Q4N+oV3OABDAtA+pyvWjbvBifQ==}
+    dev: false
+
+  /@alchemy/aa-alchemy/0.1.0-alpha.16_pv3vqcccpuzturxvtuh44prg34:
+    resolution: {integrity: sha512-+LKJIhT6yF/BQSn/8W+Cah6y5L9WDP6jshYlvY3CTG8HRX0q3RC17Rht1iE/0WVS35DzMA1Zi6RqnPY9qlrw/w==}
+    peerDependencies:
+      '@alchemy/aa-core': ^0.1.0-alpha.1
+      viem: ^1.1.7
+    dependencies:
+      '@alchemy/aa-core': 0.1.0-alpha.16_xvpaqkxaoj2ltolmug63j4h2hi
+      viem: 1.2.13_typescript@5.1.6
     dev: false
 
   /@alchemy/aa-core/0.1.0-alpha.16_xvpaqkxaoj2ltolmug63j4h2hi:

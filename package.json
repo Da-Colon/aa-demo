@@ -32,6 +32,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@alchemy/aa-alchemy": "0.1.0-alpha.16",
     "@alchemy/aa-core": "0.1.0-alpha.16",
     "@alchemy/aa-ethers": "0.1.0-alpha.16",
     "alchemy-sdk": "^2.9.2",

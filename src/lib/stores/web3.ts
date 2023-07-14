@@ -27,6 +27,7 @@ const createAccountSigner = async (signer: Signer, alchemyProvider: AlchemyProvi
     alchemyProvider,
     BASE_ENTRYPOINT_ADDRESS
   );
+  
 
   // Connect the adapter to the account to create the account signer
   const accountSigner = adapter.connectToAccount(
@@ -54,6 +55,7 @@ function createWeb3Store() {
     signer: null,
     address: null,
     network: null,
+    alchemy: null,
   });
 
   return {
@@ -70,6 +72,7 @@ function createWeb3Store() {
           network: Network.ETH_GOERLI,
         });
         const alchemyProvider = await alchemy.config.getProvider();
+
 
         // Request access to user accounts
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -92,6 +95,7 @@ function createWeb3Store() {
             signer: accountSigner,
             address: address,
             network: network,  // Set the network field
+            alchemy: alchemy,  // Set the alchemy field
           });
 
           // Update the address in the web3 store when the accounts change
@@ -119,6 +123,7 @@ function createWeb3Store() {
         signer: null,
         address: null,
         network: null,
+        alchemy: null,
       });
     },
   };
