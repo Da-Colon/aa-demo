@@ -9,6 +9,7 @@
 	import { DemoNFT__factory, SmartAccountFactory__factory } from '../typechain';
 	import type { Web3Store } from '$lib/types';
 	import { alchemyPaymasterAndDataMiddleware } from '@alchemy/aa-alchemy';
+	import type { PublicErc4337Client } from '@alchemy/aa-core';
 	let state: Web3Store;
 	const NFT_ADDRESS = '0x0962C095fF4af9d35D84918a4DD0711Fc8362Ff6';
 	const TOKEN_URI = {
@@ -31,26 +32,25 @@
 			return console.log('no signer');
 		}
 
-		// const withPaymaster = state.signer.withPaymasterMiddleware(
-		// 	alchemyPaymasterAndDataMiddleware({
-		// 		provider: state.provider.rpcClient,
-		// 		policyId: GAS_POLICY_ID,
-		// 		entryPoint: BASE_ENTRYPOINT_ADDRESS
-		// 	})
-		// );
-		// // mint nft
-		// const smartAddress = await withPaymaster.getAddress();
-		// const target = NFT_ADDRESS;
-		// const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
-		// 	target,
-		// 	JSON.stringify(TOKEN_URI)
-		// ]);
-		// const tx = await withPaymaster.sendUserOperation({
-		// 	target: smartAddress as `0x${string}`,
-		// 	data: txData as `0x${string}`,
-		// 	value: 0n
-		// });
-		// console.log('🚀 ~ file: +page.svelte:48 ~ tx:', tx);
+		const withPaymaster = state.signer.withPaymasterMiddleware(
+			alchemyPaymasterAndDataMiddleware({
+				provider: state.signer.getPublicErc4337Client(),
+				policyId: GAS_POLICY_ID,
+				entryPoint: BASE_ENTRYPOINT_ADDRESS
+			})
+		);
+		// mint nft
+		const target = NFT_ADDRESS;
+		const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
+			target,
+			JSON.stringify(TOKEN_URI)
+		]);
+		const tx = await withPaymaster.sendUserOperation({
+			target,
+			data: txData as `0x${string}`,
+			value: 0n
+		});
+		console.log('🚀 ~ file: +page.svelte:48 ~ tx:', tx);
 	}
 
 	// mint nft with gas sponsor
