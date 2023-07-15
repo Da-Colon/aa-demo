@@ -17,7 +17,7 @@ export const appConfig = {
 		name: 'Mako Energy',
 		description:
 			'Mako Energy is a decentralized energy company that is building a new energy economy in Midgar.',
-		image: 'https://pin.ski/3NKU3VC'
+		image: 'https://pin.ski/3PWwPOY'
 	}
 }
 
