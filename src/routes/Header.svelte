@@ -1,7 +1,7 @@
 <script>
 	import Web3Connect from "$lib/components/Web3Connect.svelte";
 
-	let logoText = 'Mako Wallet';
+	let logoText = 'Mako Energy';
 </script>
 
 <header>

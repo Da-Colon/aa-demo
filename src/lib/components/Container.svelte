@@ -8,7 +8,7 @@
 <style>
 section.container {
   padding: 2rem;
-  min-width: 325px;
+  width: 325px;
   max-height: 600px;
   background-image: var(--color-black);
   box-shadow: 

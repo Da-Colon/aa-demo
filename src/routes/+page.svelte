@@ -5,6 +5,8 @@
 	import type { Web3Store } from '$lib/types';
 	import { alchemyPaymasterAndDataMiddleware } from '@alchemy/aa-alchemy';
 	import { appConfig } from '$lib/components/config/app';
+	import DisplayNft from '$lib/components/DisplayNFT.svelte';
+	import { getAddress } from 'ethers/lib/utils';
 	let state: Web3Store;
 
 	web3.subscribe((value) => {
@@ -17,7 +19,7 @@
 	}
 	// mint nft with paymaster
 	async function mintNFTWithGasSponsor() {
-		if (!state.signer || !state.provider || !state.provider) {
+		if (!state.signer || !state.provider || !state.address) {
 			return console.log('no signer');
 		}
 
@@ -29,13 +31,13 @@
 			})
 		);
 		// mint nft
-		const target = appConfig.nftAddress;
+		const nftTarget = getAddress(state.address) as `0x${string}`;
 		const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
-			target,
+			nftTarget,
 			JSON.stringify(appConfig.tokenURI)
 		]);
 		const tx = await withPaymaster.sendUserOperation({
-			target,
+			target: appConfig.nftAddress,
 			data: txData as `0x${string}`,
 			value: 0n
 		});
@@ -44,15 +46,14 @@
 
 	// mint nft with gas sponsor
 	async function mintNFTWithERC20GasPayment() {
-		if (!state.signer || !state.provider || !state.provider) return console.log('no signer');
-		const smartAddress = await state.signer.getAddress();
-		const target = appConfig.nftAddress;
+		if (!state.signer || !state.provider || !state.address) return console.log('no signer');
+		const nftTarget = state.address;
 		const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
-			target,
+			nftTarget,
 			JSON.stringify(appConfig.tokenURI)
 		]);
 		await state.signer.sendUserOperation({
-			target: smartAddress as `0x${string}`,
+			target: appConfig.nftAddress,
 			data: txData as `0x${string}`,
 			value: 0n
 		});
@@ -66,9 +67,14 @@
 
 <section>
 	<Container>
+		<DisplayNft />
+	</Container>
+	<Container>
 		<section>
-			<button class="button-primary" on:click={mintNFTWithGasSponsor} disabled={!import.meta.env.VITE_GAS_POLICY_ID}
-				>Mint NFT With Gas Sponsor</button
+			<button
+				class="button-primary"
+				on:click={mintNFTWithGasSponsor}
+				disabled={!import.meta.env.VITE_GAS_POLICY_ID}>Mint NFT With Gas Sponsor</button
 			>
 		</section>
 	</Container>
@@ -86,7 +92,7 @@
 	section {
 		display: flex;
 		align-items: center;
-		justify-content: space-around;
+		justify-content: space-evenly;
 		flex-wrap: wrap;
 		gap: 2.5rem;
 		color: var(--color-white);
