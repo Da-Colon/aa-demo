@@ -35,8 +35,19 @@
     "@alchemy/aa-alchemy": "0.1.0-alpha.16",
     "@alchemy/aa-core": "0.1.0-alpha.16",
     "@alchemy/aa-ethers": "0.1.0-alpha.16",
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
     "alchemy-sdk": "^2.9.2",
-    "ethers": "^5.7.2",
+    "ethers": "5",
     "viem": "^1.2.13"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not ie <= 99",
+      "not android <= 4.4.4",
+      "not dead",
+      "not op_mini all"
+    ]
   }
 }

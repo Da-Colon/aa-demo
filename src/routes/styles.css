@@ -93,6 +93,11 @@ body {
   max-width: 325px;
 }
 
+.button-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
