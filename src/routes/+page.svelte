@@ -67,18 +67,18 @@
 <section>
 	<Container>
 		<section>
-			<button class="button-primary">Mint NFT With Paymaster (USDC)</button>
-		</section>
-	</Container>
-	<Container>
-		<section>
-			<button class="button-primary" on:click={mintNFTWithGasSponsor}
+			<button class="button-primary" on:click={mintNFTWithGasSponsor} disabled={!import.meta.env.VITE_GAS_POLICY_ID}
 				>Mint NFT With Gas Sponsor</button
 			>
 		</section>
 	</Container>
 	<Container>
-		<button class="button-primary" disabled>Sign up for Subscriptions (tbd)</button>
+		<section>
+			<button class="button-primary" disabled>Mint NFT With Paymaster (USDC)</button>
+		</section>
+	</Container>
+	<Container>
+		<button class="button-primary" disabled>Sign up for Subscription</button>
 	</Container>
 </section>
 
