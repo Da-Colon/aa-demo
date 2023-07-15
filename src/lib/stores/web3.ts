@@ -4,16 +4,7 @@ import type { Web3Store } from '$lib/types';
 import { SimpleSmartContractAccount, getChain } from '@alchemy/aa-core';
 import { EthersProviderAdapter } from '@alchemy/aa-ethers';
 import { Alchemy, Network, type AlchemyProvider } from 'alchemy-sdk';
-
-// Alchemy API key for the application
-const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY;
-export const GAS_POLICY_ID = import.meta.env.VITE_GAS_POLICY_ID;
-// https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
-// export const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454";
-// my version
-export const SIMPLE_ACCOUNT_FACTORY_ADDRESS = '0x1994d131578F9c652bdFC0b623e93d03c7022940';
-// https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/core/EntryPoint.sol
-export const BASE_ENTRYPOINT_ADDRESS = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789';
+import { appConfig } from '$lib/components/config/app';
 
 /**
  * Creates an account signer and obtains the network details.
@@ -24,24 +15,22 @@ export const BASE_ENTRYPOINT_ADDRESS = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d27
 const createAccountSigner = async (signer: Signer, alchemyProvider: AlchemyProvider) => {
   // Obtain the current network from the Alchemy provider
   const network = await alchemyProvider.getNetwork();
-
   // Create an adapter from the Ethers provider
   const adapter = EthersProviderAdapter.fromEthersProvider(
     alchemyProvider,
-    BASE_ENTRYPOINT_ADDRESS
+    appConfig.baseEntryPointAddress
   );
-
   // Connect the adapter to the account to create the account signer
   const accountSigner = adapter.connectToAccount(
     (rpcClient) =>
       new SimpleSmartContractAccount({
-        entryPointAddress: BASE_ENTRYPOINT_ADDRESS,
+        entryPointAddress: appConfig.baseEntryPointAddress,
         chain: getChain(network.chainId),
         owner: {
           signMessage: async (msg: Uint8Array) => (await signer.signMessage(msg)) as `0x${string}`,
           getAddress: async () => (await signer.getAddress()) as `0x${string}`
         },
-        factoryAddress: SIMPLE_ACCOUNT_FACTORY_ADDRESS,
+        factoryAddress: appConfig.smartAccountFactoryAddress,
         rpcClient
       })
   );
@@ -76,7 +65,7 @@ function createWeb3Store() {
 
         // Create a new Alchemy instance and obtain the provider
         const alchemy = new Alchemy({
-          apiKey: ALCHEMY_API_KEY,
+          apiKey: appConfig.alchemyApiKey,
           network: Network.ETH_GOERLI
         });
         const alchemyProvider = await alchemy.config.getProvider();

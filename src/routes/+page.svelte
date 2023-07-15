@@ -1,23 +1,12 @@
 <script lang="ts">
 	import Container from '$lib/components/Container.svelte';
-	import {
-		BASE_ENTRYPOINT_ADDRESS,
-		GAS_POLICY_ID,
-		SIMPLE_ACCOUNT_FACTORY_ADDRESS,
-		web3
-	} from '$lib/stores/web3';
-	import { DemoNFT__factory, SmartAccountFactory__factory } from '../typechain';
+	import { web3 } from '$lib/stores/web3';
+	import { DemoNFT__factory } from '../typechain';
 	import type { Web3Store } from '$lib/types';
 	import { alchemyPaymasterAndDataMiddleware } from '@alchemy/aa-alchemy';
-	import type { PublicErc4337Client } from '@alchemy/aa-core';
+	import { appConfig } from '$lib/components/config/app';
 	let state: Web3Store;
-	const NFT_ADDRESS = '0x0962C095fF4af9d35D84918a4DD0711Fc8362Ff6';
-	const TOKEN_URI = {
-		name: 'Mako Energy',
-		description:
-			'Mako Energy is a decentralized energy company that is building a new energy economy in Midgar.',
-		image: 'https://pin.ski/3NKU3VC'
-	};
+
 	web3.subscribe((value) => {
 		state = value;
 	});
@@ -35,15 +24,15 @@
 		const withPaymaster = state.signer.withPaymasterMiddleware(
 			alchemyPaymasterAndDataMiddleware({
 				provider: state.signer.getPublicErc4337Client(),
-				policyId: GAS_POLICY_ID,
-				entryPoint: BASE_ENTRYPOINT_ADDRESS
+				policyId: appConfig.gasPolicyId,
+				entryPoint: appConfig.baseEntryPointAddress
 			})
 		);
 		// mint nft
-		const target = NFT_ADDRESS;
+		const target = appConfig.nftAddress;
 		const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
 			target,
-			JSON.stringify(TOKEN_URI)
+			JSON.stringify(appConfig.tokenURI)
 		]);
 		const tx = await withPaymaster.sendUserOperation({
 			target,
@@ -57,10 +46,10 @@
 	async function mintNFTWithERC20GasPayment() {
 		if (!state.signer || !state.provider || !state.provider) return console.log('no signer');
 		const smartAddress = await state.signer.getAddress();
-		const target = NFT_ADDRESS;
+		const target = appConfig.nftAddress;
 		const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
 			target,
-			JSON.stringify(TOKEN_URI)
+			JSON.stringify(appConfig.tokenURI)
 		]);
 		await state.signer.sendUserOperation({
 			target: smartAddress as `0x${string}`,
