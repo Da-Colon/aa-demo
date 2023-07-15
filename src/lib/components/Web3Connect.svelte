@@ -3,8 +3,8 @@
 	import { web3 } from '$lib/stores/web3';
 	import type { Web3Store } from '$lib/types';
 	import { ethers } from 'ethers';
-	import { truncateAddress } from '$lib/utils/string';
 	import disconnectIcon from '$lib/images/disconnect.svg';
+	import AddressLink from './AddressLink.svelte';
 
 	let state: Web3Store;
 
@@ -33,8 +33,18 @@
 
 <section>
 	{#if state.isConnected && state.address && state.network}
-		<p class="address-display">{state.network.name}:{truncateAddress(state.address)}</p>
-		<button class="button-web3 red" on:click={disconnect}><img src={disconnectIcon} alt="disconnect"/></button>
+		<div class="address-container">
+			<p class="address-display">Network: {state.network.name}</p>
+			<p>EOA connected Account:</p>
+			<AddressLink address={state.address} network={state.network.name} />
+			{#if state.smartAddress}
+				<p>Smart Account:</p>
+				<AddressLink address={state.smartAddress} network={state.network.name} />
+			{/if}
+			<button class="button-web3 red" on:click={disconnect}>
+				<img src={disconnectIcon} alt="disconnect" />
+			</button>
+		</div>
 	{:else}
 		<button class="button-web3" on:click={connect}>Connect</button>
 	{/if}
@@ -42,13 +52,34 @@
 
 <style>
 	section {
+		position: fixed;
+		top: 20px;
+		right: 20px;
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: fit-content;
-		gap: 8px;
+		gap: 20px;
+		width: 12.5rem;
+		padding: 2rem;
+		border-radius: 8px;
+		border: 1px solid var(--color-gray-500);
+		box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+		background-color: var(--color-background);
+		z-index: 999;
 	}
+
+	.address-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		gap: 10px;
+		width: 100%;
+	}
+
 	.button-web3 {
+		align-self: center;
 		background-color: var(--color-blue-500);
 		border: none;
 		color: var(--color-white);
@@ -60,14 +91,26 @@
 		margin: 4px 2px;
 		cursor: pointer;
 		border-radius: 8px;
+		transition: background-color 0.3s;
 	}
+
+	.button-web3:hover {
+		background-color: var(--color-blue-400);
+	}
+
 	.button-web3.red {
 		background-color: var(--color-red-500);
 		color: var(--color-white);
 		padding: 4px 12px;
 	}
+
+	.button-web3.red:hover {
+		background-color: var(--color-red-400);
+	}
+
 	.address-display {
 		color: var(--color-white);
 		font-family: var(--font-mono);
+		margin-bottom: 5px;
 	}
 </style>

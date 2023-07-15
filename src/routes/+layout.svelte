@@ -11,7 +11,10 @@
 	</main>
 
 	<footer>
-		<div>Study the science of art. Study the art of science. Develop your senses - especially learn how to see. Realize that everything connects to everything else. -- Leonardo da Vinci </div>
+		<div>
+			Study the science of art. Study the art of science. Develop your senses - especially learn how
+			to see. Realize that everything connects to everything else. -- Leonardo da Vinci
+		</div>
 	</footer>
 </div>
 
@@ -32,13 +35,15 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
-
+	main {
+		margin-right: 20.5rem !important;
+	}
 	footer {
 		color: var(--color-gray-700);
 		font-weight: lighter;
 		text-align: center;
 	}
-	
+
 	footer div {
 		padding: 0.5rem 2rem;
 	}
