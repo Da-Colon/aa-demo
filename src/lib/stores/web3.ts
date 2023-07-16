@@ -47,9 +47,10 @@ function createWeb3Store() {
   const { subscribe, set, update } = writable<Web3Store>({
     isConnected: false,
     provider: null,
-    signer: null,
+    accountSigner: null,
     address: null,
     network: null,
+    signer: null,
     alchemy: null,
     adapter: null,
     smartAddress: null
@@ -91,7 +92,8 @@ function createWeb3Store() {
           set({
             isConnected: true,
             provider: alchemyProvider,
-            signer: accountSigner,
+            accountSigner,
+            signer,
             address,
             network, // Set the network field
             alchemy, // Set the alchemy field
@@ -126,11 +128,12 @@ function createWeb3Store() {
       set({
         isConnected: false,
         provider: null,
-        signer: null,
+        accountSigner: null,
         address: null,
         network: null,
         alchemy: null,
         adapter: null,
+        signer: null,
         smartAddress: null
       });
     }

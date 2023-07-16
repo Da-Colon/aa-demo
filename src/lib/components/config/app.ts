@@ -21,4 +21,9 @@ export const appConfig = {
 	}
 }
 
+export type TokenURI = {
+  name: string;
+  description: string;
+  image: string;
+}
 export type AppConfig = typeof appConfig;
