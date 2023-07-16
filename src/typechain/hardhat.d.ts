@@ -13,6 +13,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
       name: "IERC1822Proxiable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1822Proxiable__factory>;
@@ -53,6 +57,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1155Receiver__factory>;
     getContractFactory(
+      name: "ERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20__factory>;
+    getContractFactory(
+      name: "IERC20Metadata",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20Metadata__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
       name: "ERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721__factory>;
@@ -85,13 +101,29 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
+      name: "IUniswapV3SwapCallback",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV3SwapCallback__factory>;
+    getContractFactory(
+      name: "IPeripheryPayments",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPeripheryPayments__factory>;
+    getContractFactory(
+      name: "ISwapRouter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISwapRouter__factory>;
+    getContractFactory(
       name: "BaseAccount",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BaseAccount__factory>;
     getContractFactory(
-      name: "DemoNFT",
+      name: "BasePaymaster",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.DemoNFT__factory>;
+    ): Promise<Contracts.BasePaymaster__factory>;
+    getContractFactory(
+      name: "EntryPoint",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EntryPoint__factory>;
     getContractFactory(
       name: "IAccount",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -109,9 +141,53 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.INonceManager__factory>;
     getContractFactory(
+      name: "IPaymaster",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPaymaster__factory>;
+    getContractFactory(
       name: "IStakeManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStakeManager__factory>;
+    getContractFactory(
+      name: "NonceManager",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.NonceManager__factory>;
+    getContractFactory(
+      name: "SenderCreator",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SenderCreator__factory>;
+    getContractFactory(
+      name: "StakeManager",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StakeManager__factory>;
+    getContractFactory(
+      name: "TokenCallbackHandler",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TokenCallbackHandler__factory>;
+    getContractFactory(
+      name: "IOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IOracle__factory>;
+    getContractFactory(
+      name: "OracleHelper",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.OracleHelper__factory>;
+    getContractFactory(
+      name: "UniswapHelper",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.UniswapHelper__factory>;
+    getContractFactory(
+      name: "DemoNFT",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DemoNFT__factory>;
+    getContractFactory(
+      name: "TokenPaymaster",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TokenPaymaster__factory>;
+    getContractFactory(
+      name: "MakoShard",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MakoShard__factory>;
     getContractFactory(
       name: "SmartAccountFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -120,11 +196,12 @@ declare module "hardhat/types/runtime" {
       name: "SmartAccountImpl",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SmartAccountImpl__factory>;
-    getContractFactory(
-      name: "TokenCallbackHandler",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TokenCallbackHandler__factory>;
 
+    getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
     getContractAt(
       name: "IERC1822Proxiable",
       address: string,
@@ -176,6 +253,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC1155Receiver>;
     getContractAt(
+      name: "ERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20>;
+    getContractAt(
+      name: "IERC20Metadata",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20Metadata>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
       name: "ERC721",
       address: string,
       signer?: ethers.Signer
@@ -216,15 +308,35 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
+      name: "IUniswapV3SwapCallback",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV3SwapCallback>;
+    getContractAt(
+      name: "IPeripheryPayments",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPeripheryPayments>;
+    getContractAt(
+      name: "ISwapRouter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISwapRouter>;
+    getContractAt(
       name: "BaseAccount",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BaseAccount>;
     getContractAt(
-      name: "DemoNFT",
+      name: "BasePaymaster",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.DemoNFT>;
+    ): Promise<Contracts.BasePaymaster>;
+    getContractAt(
+      name: "EntryPoint",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EntryPoint>;
     getContractAt(
       name: "IAccount",
       address: string,
@@ -246,10 +358,65 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.INonceManager>;
     getContractAt(
+      name: "IPaymaster",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPaymaster>;
+    getContractAt(
       name: "IStakeManager",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IStakeManager>;
+    getContractAt(
+      name: "NonceManager",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.NonceManager>;
+    getContractAt(
+      name: "SenderCreator",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SenderCreator>;
+    getContractAt(
+      name: "StakeManager",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StakeManager>;
+    getContractAt(
+      name: "TokenCallbackHandler",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TokenCallbackHandler>;
+    getContractAt(
+      name: "IOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IOracle>;
+    getContractAt(
+      name: "OracleHelper",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.OracleHelper>;
+    getContractAt(
+      name: "UniswapHelper",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.UniswapHelper>;
+    getContractAt(
+      name: "DemoNFT",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DemoNFT>;
+    getContractAt(
+      name: "TokenPaymaster",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TokenPaymaster>;
+    getContractAt(
+      name: "MakoShard",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MakoShard>;
     getContractAt(
       name: "SmartAccountFactory",
       address: string,
@@ -260,11 +427,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SmartAccountImpl>;
-    getContractAt(
-      name: "TokenCallbackHandler",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.TokenCallbackHandler>;
 
     // default types
     getContractFactory(
