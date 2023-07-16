@@ -8,6 +8,7 @@
 	import DisplayNft from '$lib/components/DisplayNFT.svelte';
 	import { getAddress } from 'ethers/lib/utils';
 	import type { AccountSigner } from '@alchemy/aa-ethers';
+	import DisplayErc20 from '$lib/components/DisplayERC20.svelte';
 	let state: Web3Store;
 
 	web3.subscribe((value) => {
@@ -45,21 +46,13 @@
 		console.log('🚀 ~ file: +page.svelte:48 ~ tx:', tx);
 	}
 
-	async function mintNFTWithERC20GasPayment() {
-		if (!state.accountSigner || !state.provider || !state.address) return console.log('no signer');
-		// const nftTarget = state.address as `0x${string}`;
-		// await mintNFT(state.signer, nftTarget, appConfig.tokenURI);
-	}
-
 	async function mintNFTWithInjectedWallet() {
-		if(!state.signer || !state.address) return console.log('no signer');
+		if (!state.signer || !state.address) return console.log('no signer');
 		const nftContract = DemoNFT__factory.connect(appConfig.nftAddress, state.signer);
 		const tx = await nftContract.mintEnergy(state.address, JSON.stringify(appConfig.tokenURI));
 		tx.wait();
-		console.log("🚀 ~ file: +page.svelte:58 ~ tx:", tx)
+		console.log('🚀 ~ file: +page.svelte:58 ~ tx:', tx);
 	}
-
-	
 </script>
 
 <svelte:head>
@@ -70,6 +63,9 @@
 <section>
 	<Container>
 		<DisplayNft />
+	</Container>
+	<Container>
+		<DisplayErc20 {mintNFT} />
 	</Container>
 	<Container>
 		<section>
@@ -83,19 +79,12 @@
 	</Container>
 	<Container>
 		<section>
-			<button
-				class="button-primary"
-				on:click={mintNFTWithInjectedWallet}
-				disabled={!state.signer}
+			<button class="button-primary" on:click={mintNFTWithInjectedWallet} disabled={!state.signer}
 				>Mint NFT With Injected Wallet</button
 			>
 		</section>
 	</Container>
-	<Container>
-		<section>
-			<button class="button-primary" disabled>Mint NFT With Paymaster (USDC)</button>
-		</section>
-	</Container>
+	
 	<Container>
 		<button class="button-primary" disabled>Sign up for Subscription</button>
 	</Container>

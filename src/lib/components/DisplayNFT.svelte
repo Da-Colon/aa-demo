@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BigNumber, ethers } from 'ethers';
+	import { BigNumber } from 'ethers';
 	import { onDestroy } from 'svelte';
 	import { web3 } from '$lib/stores/web3';
 	import type { Web3Store } from '$lib/types';
@@ -53,7 +53,7 @@
 
 <section>
   {#if state.isConnected}
-    <h2>Your Balance: {balance.toString()}</h2>
+    <h2>Your Mako Energy: {balance.toString()}</h2>
     <div>
       <img class="nft-image" src={tokenImageUrl} alt="ERC721" />
     </div>

@@ -1,6 +1,6 @@
 export const appConfig = {
   // @todo add link when repo is public
-  smartAccountFactoryAddress: '0x1994d131578F9c652bdFC0b623e93d03c7022940' as `0x${string}`,
+  smartAccountFactoryAddress: '0xa4E47408B9D214d61bce7A125c5C6bDCE197cd26' as `0x${string}`,
   // * Obtained from https://dashboard.alchemy.com/
   alchemyApiKey: import.meta.env.VITE_ALCHEMY_API_KEY as `0x${string}`,
   // @todo This should be removed, this should be able to be obtained from the smart account factory
@@ -10,7 +10,6 @@ export const appConfig = {
   // @note Gas Policies can also be programatically created using the Alchemy API
   // * https://docs.alchemy.com/reference/gas-manager-admin-api-quickstart
   gasPolicyId: import.meta.env.VITE_GAS_POLICY_ID,
-
   // @todo add link when repo is public
   nftAddress: '0x0962C095fF4af9d35D84918a4DD0711Fc8362Ff6' as `0x${string}`,
 	tokenURI: {
@@ -18,7 +17,9 @@ export const appConfig = {
 		description:
 			'Mako Energy is a decentralized energy company that is building a new energy economy in Midgar.',
 		image: 'https://pin.ski/3PWwPOY'
-	}
+	},
+  demoTokenToPayAddress: "0x1173149a0De9cb3Af230336F61430a5A81074146" as `0x${string}`,
+  demoTokenPaymasterAddress: "0x6A99110348Db821378a7F0D892132880dF4B1855" as `0x${string}`,
 }
 
 export type TokenURI = {
