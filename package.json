@@ -38,7 +38,7 @@
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "alchemy-sdk": "^2.9.2",
-    "ethers": "5",
+    "ethers": "^5.7.2",
     "viem": "^1.2.13"
   },
   "browserslist": {

@@ -100,3 +100,5 @@ export type { SmartAccountFactory } from "./contracts/SmartAccountFactory";
 export { SmartAccountFactory__factory } from "./factories/contracts/SmartAccountFactory__factory";
 export type { SmartAccountImpl } from "./contracts/SmartAccountImpl";
 export { SmartAccountImpl__factory } from "./factories/contracts/SmartAccountImpl__factory";
+export type { SubscriptionPaymaster } from "./contracts/SubscriptionPaymaster";
+export { SubscriptionPaymaster__factory } from "./factories/contracts/SubscriptionPaymaster__factory";

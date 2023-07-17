@@ -5,7 +5,7 @@
 	import type { Web3Store } from '$lib/types';
 	import { MakoShard__factory, type MakoShard } from '../../typechain';
 	import { appConfig, type TokenURI } from './config/app';
-	import { makoPaymasterAndDataMiddleware } from '../../middleware/makopaymaster';
+	import { makoPaymasterAndDataMiddleware } from '../../middleware/makoShardPaymasterMiddleware';
 	import { getAddress } from 'ethers/lib/utils';
 	import type { AccountSigner } from '@alchemy/aa-ethers';
 
@@ -73,7 +73,7 @@
 	}
 
 	async function mintNFTWithERC20GasPayment() {
-		if (!state.accountSigner || !state.provider || !state.address) {
+		if (!state.accountSigner || !state.provider || !state.smartAddress) {
 			return console.log('no signer');
 		}
 
@@ -81,7 +81,7 @@
 			makoPaymasterAndDataMiddleware
 		);
 
-		const nftTarget = getAddress(state.address) as `0x${string}`;
+		const nftTarget = getAddress(state.smartAddress) as `0x${string}`;
 		const tx = await mintNFT(withPaymaster, nftTarget, appConfig.tokenURI);
 		console.log('🚀 ~ tx:', tx);
 	}

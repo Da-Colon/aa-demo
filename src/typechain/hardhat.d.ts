@@ -196,6 +196,10 @@ declare module "hardhat/types/runtime" {
       name: "SmartAccountImpl",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SmartAccountImpl__factory>;
+    getContractFactory(
+      name: "SubscriptionPaymaster",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SubscriptionPaymaster__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -427,6 +431,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SmartAccountImpl>;
+    getContractAt(
+      name: "SubscriptionPaymaster",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SubscriptionPaymaster>;
 
     // default types
     getContractFactory(

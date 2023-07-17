@@ -21,8 +21,8 @@
 	};
 
 	const loadBalance = async () => {
-		if (state.isConnected && state.address && contract) {
-			balance = await contract.balanceOf(state.address);
+		if (state.isConnected && state.smartAddress && contract) {
+			balance = await contract.balanceOf(state.smartAddress);
 		}
 		loading = false;
 	};
@@ -34,7 +34,7 @@
 		await loadBalance();
 		// Listen to Transfer events and update balance
 		contract?.on('Transfer', (from, to) => {
-			if (from === state.address || to === state.address) {
+			if (from === state.smartAddress || to === state.smartAddress) {
 				loadBalance();
 			}
 		});
@@ -44,7 +44,7 @@
 		if (!contract) return;
 		// Remove listener when component gets destroyed
 		contract.off('Transfer', (from, to) => {
-			if (from === state.address || to === state.address) {
+			if (from === state.smartAddress || to === state.smartAddress) {
 				loadBalance();
 			}
 		});

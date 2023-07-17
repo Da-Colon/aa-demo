@@ -7,3 +7,4 @@ export { DemoNFT__factory } from "./DemoNFT__factory";
 export { MakoShard__factory } from "./MakoShard__factory";
 export { SmartAccountFactory__factory } from "./SmartAccountFactory__factory";
 export { SmartAccountImpl__factory } from "./SmartAccountImpl__factory";
+export { SubscriptionPaymaster__factory } from "./SubscriptionPaymaster__factory";

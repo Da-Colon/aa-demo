@@ -9,3 +9,4 @@ export type { DemoNFT } from "./DemoNFT";
 export type { MakoShard } from "./MakoShard";
 export type { SmartAccountFactory } from "./SmartAccountFactory";
 export type { SmartAccountImpl } from "./SmartAccountImpl";
+export type { SubscriptionPaymaster } from "./SubscriptionPaymaster";

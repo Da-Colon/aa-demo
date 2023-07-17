@@ -68,22 +68,54 @@ export type UserOperationStructOutput = [
   signature: string;
 };
 
+export declare namespace SmartAccountImpl {
+  export type SubscriptionStruct = {
+    recipient: PromiseOrValue<string>;
+    token: PromiseOrValue<string>;
+    cost: PromiseOrValue<BigNumberish>;
+    period: PromiseOrValue<BigNumberish>;
+    lastProcessed: PromiseOrValue<BigNumberish>;
+    active: PromiseOrValue<boolean>;
+  };
+
+  export type SubscriptionStructOutput = [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    boolean
+  ] & {
+    recipient: string;
+    token: string;
+    cost: BigNumber;
+    period: BigNumber;
+    lastProcessed: BigNumber;
+    active: boolean;
+  };
+}
+
 export interface SmartAccountImplInterface extends utils.Interface {
   functions: {
+    "activeSubscription()": FunctionFragment;
     "addDeposit()": FunctionFragment;
     "entryPoint()": FunctionFragment;
     "execute(address,uint256,bytes)": FunctionFragment;
     "executeBatch(address[],bytes[])": FunctionFragment;
     "getDeposit()": FunctionFragment;
     "getNonce()": FunctionFragment;
+    "getSubscription()": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
+    "processSubscription()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
+    "subscribeAndActivate(address,address)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "tokensReceived(address,address,address,uint256,bytes,bytes)": FunctionFragment;
+    "unsubscribe()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256)": FunctionFragment;
@@ -92,26 +124,35 @@ export interface SmartAccountImplInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "activeSubscription"
       | "addDeposit"
       | "entryPoint"
       | "execute"
       | "executeBatch"
       | "getDeposit"
       | "getNonce"
+      | "getSubscription"
       | "initialize"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
       | "onERC721Received"
       | "owner"
+      | "processSubscription"
       | "proxiableUUID"
+      | "subscribeAndActivate"
       | "supportsInterface"
       | "tokensReceived"
+      | "unsubscribe"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "validateUserOp"
       | "withdrawDepositTo"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "activeSubscription",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "addDeposit",
     values?: undefined
@@ -137,6 +178,10 @@ export interface SmartAccountImplInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "getNonce", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getSubscription",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [PromiseOrValue<string>]
@@ -172,8 +217,16 @@ export interface SmartAccountImplInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "processSubscription",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "subscribeAndActivate",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -189,6 +242,10 @@ export interface SmartAccountImplInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BytesLike>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unsubscribe",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeTo",
@@ -211,6 +268,10 @@ export interface SmartAccountImplInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "activeSubscription",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "addDeposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
@@ -220,6 +281,10 @@ export interface SmartAccountImplInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getSubscription",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onERC1155BatchReceived",
@@ -235,7 +300,15 @@ export interface SmartAccountImplInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "processSubscription",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "proxiableUUID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "subscribeAndActivate",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -244,6 +317,10 @@ export interface SmartAccountImplInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "tokensReceived",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "unsubscribe",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
@@ -265,6 +342,9 @@ export interface SmartAccountImplInterface extends utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "SimpleAccountInitialized(address,address)": EventFragment;
+    "SubscriptionCreated(address,address,uint256,uint256)": EventFragment;
+    "SubscriptionDeleted()": EventFragment;
+    "SubscriptionProcessed()": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -272,6 +352,9 @@ export interface SmartAccountImplInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SimpleAccountInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SubscriptionCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SubscriptionDeleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SubscriptionProcessed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -315,6 +398,38 @@ export type SimpleAccountInitializedEvent = TypedEvent<
 export type SimpleAccountInitializedEventFilter =
   TypedEventFilter<SimpleAccountInitializedEvent>;
 
+export interface SubscriptionCreatedEventObject {
+  recipient: string;
+  token: string;
+  tokenId: BigNumber;
+  period: BigNumber;
+}
+export type SubscriptionCreatedEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber],
+  SubscriptionCreatedEventObject
+>;
+
+export type SubscriptionCreatedEventFilter =
+  TypedEventFilter<SubscriptionCreatedEvent>;
+
+export interface SubscriptionDeletedEventObject {}
+export type SubscriptionDeletedEvent = TypedEvent<
+  [],
+  SubscriptionDeletedEventObject
+>;
+
+export type SubscriptionDeletedEventFilter =
+  TypedEventFilter<SubscriptionDeletedEvent>;
+
+export interface SubscriptionProcessedEventObject {}
+export type SubscriptionProcessedEvent = TypedEvent<
+  [],
+  SubscriptionProcessedEventObject
+>;
+
+export type SubscriptionProcessedEventFilter =
+  TypedEventFilter<SubscriptionProcessedEvent>;
+
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -349,6 +464,19 @@ export interface SmartAccountImpl extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    activeSubscription(
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, BigNumber, BigNumber, BigNumber, boolean] & {
+        recipient: string;
+        token: string;
+        cost: BigNumber;
+        period: BigNumber;
+        lastProcessed: BigNumber;
+        active: boolean;
+      }
+    >;
+
     addDeposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -371,6 +499,14 @@ export interface SmartAccountImpl extends BaseContract {
     getDeposit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getNonce(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getSubscription(
+      overrides?: CallOverrides
+    ): Promise<
+      [SmartAccountImpl.SubscriptionStructOutput] & {
+        subscription: SmartAccountImpl.SubscriptionStructOutput;
+      }
+    >;
 
     initialize(
       anOwner: PromiseOrValue<string>,
@@ -405,7 +541,17 @@ export interface SmartAccountImpl extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
+    processSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
+
+    subscribeAndActivate(
+      recipient: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
@@ -421,6 +567,10 @@ export interface SmartAccountImpl extends BaseContract {
       arg5: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[void]>;
+
+    unsubscribe(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -447,6 +597,19 @@ export interface SmartAccountImpl extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  activeSubscription(
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string, BigNumber, BigNumber, BigNumber, boolean] & {
+      recipient: string;
+      token: string;
+      cost: BigNumber;
+      period: BigNumber;
+      lastProcessed: BigNumber;
+      active: boolean;
+    }
+  >;
+
   addDeposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -469,6 +632,10 @@ export interface SmartAccountImpl extends BaseContract {
   getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
   getNonce(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getSubscription(
+    overrides?: CallOverrides
+  ): Promise<SmartAccountImpl.SubscriptionStructOutput>;
 
   initialize(
     anOwner: PromiseOrValue<string>,
@@ -503,7 +670,17 @@ export interface SmartAccountImpl extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
+  processSubscription(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+  subscribeAndActivate(
+    recipient: PromiseOrValue<string>,
+    token: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   supportsInterface(
     interfaceId: PromiseOrValue<BytesLike>,
@@ -519,6 +696,10 @@ export interface SmartAccountImpl extends BaseContract {
     arg5: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<void>;
+
+  unsubscribe(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   upgradeTo(
     newImplementation: PromiseOrValue<string>,
@@ -545,6 +726,19 @@ export interface SmartAccountImpl extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    activeSubscription(
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, BigNumber, BigNumber, BigNumber, boolean] & {
+        recipient: string;
+        token: string;
+        cost: BigNumber;
+        period: BigNumber;
+        lastProcessed: BigNumber;
+        active: boolean;
+      }
+    >;
+
     addDeposit(overrides?: CallOverrides): Promise<void>;
 
     entryPoint(overrides?: CallOverrides): Promise<string>;
@@ -565,6 +759,10 @@ export interface SmartAccountImpl extends BaseContract {
     getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     getNonce(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSubscription(
+      overrides?: CallOverrides
+    ): Promise<SmartAccountImpl.SubscriptionStructOutput>;
 
     initialize(
       anOwner: PromiseOrValue<string>,
@@ -599,7 +797,15 @@ export interface SmartAccountImpl extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
+    processSubscription(overrides?: CallOverrides): Promise<void>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+    subscribeAndActivate(
+      recipient: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
@@ -615,6 +821,8 @@ export interface SmartAccountImpl extends BaseContract {
       arg5: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    unsubscribe(overrides?: CallOverrides): Promise<void>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -670,6 +878,25 @@ export interface SmartAccountImpl extends BaseContract {
       owner?: PromiseOrValue<string> | null
     ): SimpleAccountInitializedEventFilter;
 
+    "SubscriptionCreated(address,address,uint256,uint256)"(
+      recipient?: PromiseOrValue<string> | null,
+      token?: PromiseOrValue<string> | null,
+      tokenId?: null,
+      period?: null
+    ): SubscriptionCreatedEventFilter;
+    SubscriptionCreated(
+      recipient?: PromiseOrValue<string> | null,
+      token?: PromiseOrValue<string> | null,
+      tokenId?: null,
+      period?: null
+    ): SubscriptionCreatedEventFilter;
+
+    "SubscriptionDeleted()"(): SubscriptionDeletedEventFilter;
+    SubscriptionDeleted(): SubscriptionDeletedEventFilter;
+
+    "SubscriptionProcessed()"(): SubscriptionProcessedEventFilter;
+    SubscriptionProcessed(): SubscriptionProcessedEventFilter;
+
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -679,6 +906,8 @@ export interface SmartAccountImpl extends BaseContract {
   };
 
   estimateGas: {
+    activeSubscription(overrides?: CallOverrides): Promise<BigNumber>;
+
     addDeposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -701,6 +930,8 @@ export interface SmartAccountImpl extends BaseContract {
     getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     getNonce(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSubscription(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       anOwner: PromiseOrValue<string>,
@@ -735,7 +966,17 @@ export interface SmartAccountImpl extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
+    processSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    subscribeAndActivate(
+      recipient: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
@@ -750,6 +991,10 @@ export interface SmartAccountImpl extends BaseContract {
       arg4: PromiseOrValue<BytesLike>,
       arg5: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    unsubscribe(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeTo(
@@ -778,6 +1023,10 @@ export interface SmartAccountImpl extends BaseContract {
   };
 
   populateTransaction: {
+    activeSubscription(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     addDeposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -800,6 +1049,8 @@ export interface SmartAccountImpl extends BaseContract {
     getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getNonce(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getSubscription(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       anOwner: PromiseOrValue<string>,
@@ -834,7 +1085,17 @@ export interface SmartAccountImpl extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    processSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    subscribeAndActivate(
+      recipient: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
@@ -849,6 +1110,10 @@ export interface SmartAccountImpl extends BaseContract {
       arg4: PromiseOrValue<BytesLike>,
       arg5: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    unsubscribe(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(

@@ -11,5 +11,5 @@ export type Web3Store = {
   network: ethers.providers.Network | null,
   alchemy: Alchemy | null,
   adapter: EthersProviderAdapter | null,
-  smartAddress: string | null
+  smartAddress: string | null,
 }
