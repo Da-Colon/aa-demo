@@ -15,196 +15,211 @@
 	import type { AccountSigner } from '@alchemy/aa-ethers';
 	import { alchemyPaymasterAndDataMiddleware } from '@alchemy/aa-alchemy';
 
+	// Exported function to mint an NFT
 	export let mintNFT: (
 		accountSigner: AccountSigner,
 		target: `0x${string}`,
 		tokenURI: TokenURI
 	) => Promise<any>;
 
-	let state: Web3Store;
-	let contract: MakoShard;
-	let smartAccountContract: MakoAccount;
+	// The state of the web3 provider
+	let web3State: Web3Store;
 
-	let isApproved = false;
-	let isSubscribed = false;
-	let loading = false;
+	// The MakoShard and MakoAccount smart contracts
+	let shardContract: MakoShard;
+	let accountContract: MakoAccount;
 
-	const loadContract = async () => {
-		if (!state.provider) return;
-		const _contract = MakoShard__factory.connect(appConfig.demoTokenToPayAddress, state.provider);
-		contract = _contract;
-		return _contract;
-	};
+	// Indicators for approval, subscription, and loading states
+	let isTransferApproved = false;
+	let isUserSubscribed = false;
+	let isLoading = false;
 
-	const loadSmartAccountContract = async () => {
-		if (!state.provider || !state.smartAddress) return;
-		const _smartAccountContract = MakoAccount__factory.connect(
-			state.smartAddress,
-			state.provider
+	// Function to initialize the MakoShard contract
+	const initializeShardContract = async () => {
+		if (!web3State.provider) return;
+		const _shardContract = MakoShard__factory.connect(
+			appConfig.demoTokenToPayAddress,
+			web3State.provider
 		);
-		smartAccountContract = _smartAccountContract;
-		return _smartAccountContract;
+		shardContract = _shardContract;
+		return _shardContract;
 	};
 
-	const checkApproval = async () => {
-		if (!contract || !state.smartAddress || !appConfig.demoSubscriptionPaymasterAddress) return;
-		const allowance = await contract.allowance(
-			state.smartAddress,
+	// Function to initialize the MakoAccount contract
+	const initializeAccountContract = async () => {
+		if (!web3State.provider || !web3State.smartAddress) return;
+		const _accountContract = MakoAccount__factory.connect(
+			web3State.smartAddress,
+			web3State.provider
+		);
+		accountContract = _accountContract;
+		return _accountContract;
+	};
+
+	// Function to check if the transfer has been approved
+	const validateTransferApproval = async () => {
+		if (!shardContract || !web3State.smartAddress || !appConfig.demoSubscriptionPaymasterAddress)
+			return;
+		const allowance = await shardContract.allowance(
+			web3State.smartAddress,
 			appConfig.demoSubscriptionPaymasterAddress
 		);
-		console.log('🚀 ~ file: Subscription.svelte:52 ~ allowance:', allowance);
-		isApproved = allowance.eq(ethers.constants.MaxUint256);
+		isTransferApproved = allowance.eq(ethers.constants.MaxUint256);
 	};
 
-	async function checkSubscription() {
-		if (!smartAccountContract) return console.log('no smart account contract');
+	// Function to check the status of the subscription
+	async function checkUserSubscription() {
+		if (!accountContract) return console.log('No MakoAccount contract');
 		try {
-			const subscription = await smartAccountContract?.getSubscription();
-			isSubscribed = subscription[5];
+			const subscription = await accountContract.getSubscription();
+			isUserSubscribed = subscription[5];
 		} catch (error) {
-			console.log('🚀 ~ file: Subscription.svelte:65 ~ error:', error);
+			console.log('Error during subscription check:', error);
 		}
 	}
 
-	async function approveTransfer() {
-		// Check if we have a signer
-		if (!state.accountSigner || !contract) {
-			return console.log('no signer');
+	// Function to approve the transfer
+	async function approveTokenTransfer() {
+		if (!web3State.accountSigner || !shardContract) {
+			return console.log('No account signer');
 		}
 
-		// Create a new signer that uses a paymaster
-		const withPaymaster = state.accountSigner.withPaymasterMiddleware(
+		const withPaymaster = web3State.accountSigner.withPaymasterMiddleware(
 			alchemyPaymasterAndDataMiddleware({
-				provider: state.accountSigner.getPublicErc4337Client(),
+				provider: web3State.accountSigner.getPublicErc4337Client(),
 				policyId: appConfig.gasPolicyId,
 				entryPoint: appConfig.baseEntryPointAddress
 			})
 		);
 
-		// Encode the data for the 'approve' function call
-		const approveData = contract.interface.encodeFunctionData('approve', [
-			appConfig.demoSubscriptionPaymasterAddress, // Address to approve
-			ethers.constants.MaxUint256 // Maximum number of tokens to approve
+		const approveData = shardContract.interface.encodeFunctionData('approve', [
+			appConfig.demoSubscriptionPaymasterAddress,
+			ethers.constants.MaxUint256
 		]);
+
 		try {
-			// Send a user operation to approve the transfer
 			const tx = await withPaymaster.sendUserOperation({
-				target: appConfig.demoTokenToPayAddress, // Target the token contract
-				data: approveData as `0x${string}`, // The 'approve' function call
-				value: 0n // No ether value transferred
+				target: appConfig.demoTokenToPayAddress,
+				data: approveData as `0x${string}`,
+				value: 0n
 			});
-			console.log('🚀 Subscription Paymaster Approval Sent', tx);
+			console.log('Token transfer approval sent', tx);
 		} catch (error) {
-			console.log('🚀 ~ file: DisplayERC20.svelte:72 ~ error:', error);
+			console.log('Error during transfer approval:', error);
 		}
 	}
 
-	async function activateSubscription() {
-		if (!state.accountSigner || !state.provider || !state.smartAddress) {
-			return console.log('no signer');
+	// Function to activate the subscription
+	async function activateUserSubscription() {
+		if (!web3State.accountSigner || !web3State.provider || !web3State.smartAddress) {
+			return console.log('No account signer');
 		}
 
 		const recipient = appConfig.demoSubscriptionPaymasterAddress;
-		const token = appConfig.demoTokenToPayAddress; // The token address should be provided here
+		const token = appConfig.demoTokenToPayAddress;
 
-		// Encode the subscribeAndActivate function call
 		const subscribeData = MakoAccount__factory.createInterface().encodeFunctionData(
 			'subscribeAndActivate',
 			[recipient, token]
 		);
 
-		const withPaymaster = state.accountSigner.withPaymasterMiddleware(
+		const withPaymaster = web3State.accountSigner.withPaymasterMiddleware(
 			alchemyPaymasterAndDataMiddleware({
-				provider: state.accountSigner.getPublicErc4337Client(),
+				provider: web3State.accountSigner.getPublicErc4337Client(),
 				policyId: appConfig.gasPolicyId,
 				entryPoint: appConfig.baseEntryPointAddress
 			})
 		);
 
-		const target = getAddress(state.smartAddress) as `0x${string}`;
+		const target = getAddress(web3State.smartAddress) as `0x${string}`;
 		const tx = await withPaymaster.sendUserOperation({
 			target,
 			data: subscribeData as `0x${string}`,
 			value: 0n
 		});
-		console.log('🚀 ~ tx:', tx);
+		console.log('Subscription activation transaction:', tx);
 	}
 
+	// Function to mint an NFT with subscription payment
 	async function mintNFTWithSubscriptionPayment() {
-		if (!state.accountSigner || !state.provider || !state.smartAddress) {
-			return console.log('no signer');
+		if (!web3State.accountSigner || !web3State.provider || !web3State.smartAddress) {
+			return console.log('No account signer');
 		}
 
-		const withPaymaster = state.accountSigner.withPaymasterMiddleware(
+		const withPaymaster = web3State.accountSigner.withPaymasterMiddleware(
 			subscriptionPaymasterAndDataMiddleware
 		);
 
-		const nftTarget = getAddress(state.smartAddress) as `0x${string}`;
+		const nftTarget = getAddress(web3State.smartAddress) as `0x${string}`;
 		const tx = await mintNFT(withPaymaster, nftTarget, appConfig.tokenURI);
-		console.log('🚀 ~ tx:', tx);
+		console.log('NFT minting transaction:', tx);
 	}
 
+	// Web3 subscription that loads contracts and checks approval and subscription
 	web3.subscribe(async (value) => {
-		state = value;
-		await loadContract();
-		await loadSmartAccountContract();
-		await checkApproval();
-		await checkSubscription();
+		web3State = value;
+		await initializeShardContract();
+		await initializeAccountContract();
+		await validateTransferApproval();
+		await checkUserSubscription();
 
-		contract?.on('Approval', (owner, spender) => {
-			if (owner === state.smartAddress || spender === appConfig.demoSubscriptionPaymasterAddress) {
-				checkApproval();
+		shardContract?.on('Approval', (owner, spender) => {
+			if (
+				owner === web3State.smartAddress ||
+				spender === appConfig.demoSubscriptionPaymasterAddress
+			) {
+				validateTransferApproval();
 			}
 		});
 
-		// Listen for SubscriptionCreated event
-		smartAccountContract?.on('SubscriptionCreated', () => {
-			isSubscribed = true;
+		accountContract?.on('SubscriptionCreated', () => {
+			isUserSubscribed = true;
 		});
 
-		// Listen for SubscriptionDeleted event
-		smartAccountContract?.on('SubscriptionDeleted', () => {
-			isSubscribed = false;
+		accountContract?.on('SubscriptionDeleted', () => {
+			isUserSubscribed = false;
 		});
 	});
 
+	// Unsubscribe event listeners upon destruction
 	onDestroy(() => {
-		if (contract) {
-			contract.off('Approval', (owner, spender) => {
+		if (shardContract) {
+			shardContract.off('Approval', (owner, spender) => {
 				if (
-					owner === state.smartAddress ||
+					owner === web3State.smartAddress ||
 					spender === appConfig.demoSubscriptionPaymasterAddress
 				) {
-					checkApproval();
+					validateTransferApproval();
 				}
 			});
 		}
 
-		if (smartAccountContract) {
-			smartAccountContract.off('SubscriptionCreated', () => {
-				isSubscribed = true;
+		if (accountContract) {
+			accountContract.off('SubscriptionCreated', () => {
+				isUserSubscribed = true;
 			});
 
-			smartAccountContract.off('SubscriptionDeleted', () => {
-				isSubscribed = false;
+			accountContract.off('SubscriptionDeleted', () => {
+				isUserSubscribed = false;
 			});
 		}
 	});
 </script>
 
 <section>
-	{#if state.isConnected}
-		{#if !isApproved}
-			<button class="button-primary" on:click={approveTransfer} disabled={loading}>
+	{#if web3State.isConnected}
+		3 Shards == 1 hour
+		{#if !isTransferApproved}
+			<button class="button-primary" on:click={approveTokenTransfer} disabled={isLoading}>
 				Approve Shard Transfer
 			</button>
-		{:else if isApproved && !isSubscribed}
-			<button class="button-primary" on:click={activateSubscription} disabled={loading}>
-				Activate Subscription
+		{:else if isTransferApproved && !isUserSubscribed}
+			<button class="button-primary" on:click={activateUserSubscription} disabled={isLoading}>
+				Activate Subscription (3 Shards)
 			</button>
-		{:else if isApproved && isSubscribed}
+		{:else if isTransferApproved && isUserSubscribed}
 			<button class="button-primary" on:click={mintNFTWithSubscriptionPayment}>
-				Mint NFT with as active subscriber
+				Mint NFT (Active Subscription)
 			</button>
 		{/if}
 	{:else}
@@ -213,6 +228,14 @@
 </section>
 
 <style>
+	section {
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		color: var(--color-white);
+	}
 	button {
 		width: 100%;
 	}

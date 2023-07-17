@@ -18,20 +18,21 @@
 
 	// Mint NFT helper function
 	async function mintNFT(accountSigner: AccountSigner, target: `0x${string}`, tokenURI: TokenURI) {
-		const txData = MakoEnergy__factory.createInterface().encodeFunctionData('mintEnergy', [
+		const minTokenData = MakoEnergy__factory.createInterface().encodeFunctionData('mintEnergy', [
 			target,
 			JSON.stringify(tokenURI)
 		]);
 		return await accountSigner.sendUserOperation({
 			target: appConfig.nftAddress,
-			data: txData as `0x${string}`,
+			data: minTokenData as `0x${string}`,
 			value: 0n
 		});
 	}
 
 	async function mintNFTWithGasSponsor() {
 		if (!state.accountSigner || !state.provider || !state.smartAddress) {
-			return console.log('no signer');
+			console.log('no signer');
+			return;
 		}
 
 		const withPaymaster = state.accountSigner.withPaymasterMiddleware(
@@ -43,8 +44,8 @@
 		);
 
 		const nftTarget = getAddress(state.smartAddress) as `0x${string}`;
-		const tx = await mintNFT(withPaymaster, nftTarget, appConfig.tokenURI);
-		console.log('🚀 ~ file: +page.svelte:48 ~ tx:', tx);
+		const mintTransaction = await mintNFT(withPaymaster, nftTarget, appConfig.tokenURI);
+		console.log('🚀 ~ mint transaction sent', mintTransaction);
 	}
 
 	async function mintNFTWithInjectedWallet() {
@@ -52,7 +53,7 @@
 		const nftContract = MakoEnergy__factory.connect(appConfig.nftAddress, state.signer);
 		const tx = await nftContract.mintEnergy(state.smartAddress, JSON.stringify(appConfig.tokenURI));
 		tx.wait();
-		console.log('🚀 ~ file: +page.svelte:58 ~ tx:', tx);
+		console.log('🚀 Energy Minted and transfered', tx);
 	}
 </script>
 
@@ -70,19 +71,22 @@
 	</Container>
 	<Container>
 		<section>
+			Mint and have gas sponsored by Alchemy. Say thank you to Alchemy!
 			<button
 				class="button-primary"
 				on:click={mintNFTWithGasSponsor}
 				disabled={!import.meta.env.VITE_GAS_POLICY_ID || !state.address}
-				>Mint NFT With Gas Sponsor</button
 			>
+				Mint Energy (Gas Sponsored)
+			</button>
 		</section>
 	</Container>
 	<Container>
 		<section>
-			<button class="button-primary" on:click={mintNFTWithInjectedWallet} disabled={!state.signer}
-				>Mint NFT With Injected Wallet</button
-			>
+			Old school way
+			<button class="button-primary" on:click={mintNFTWithInjectedWallet} disabled={!state.signer}>
+				Mint Energy (Injected Wallet)
+			</button>
 		</section>
 	</Container>
 
@@ -99,5 +103,8 @@
 		flex-wrap: wrap;
 		gap: 2.5rem;
 		color: var(--color-white);
+	}
+	section section {
+		gap: 0.5rem
 	}
 </style>

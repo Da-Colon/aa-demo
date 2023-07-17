@@ -1,19 +1,29 @@
 <script lang="ts">
+	// Import required libraries
 	import { ethers } from 'ethers';
 	import { onDestroy } from 'svelte';
 	import { web3 } from '$lib/stores/web3';
+
+	// Import types
 	import type { Web3Store } from '$lib/types';
-	import { MakoShard__factory, type MakoShard } from '../../typechain';
-	import { appConfig, type TokenURI } from './config/app';
+	import type { AccountSigner } from '@alchemy/aa-ethers';
+	import type { TokenURI } from './config/app';
+	import type { MakoShard } from '../../typechain';
+
+	// Import modules
+	import { MakoShard__factory } from '../../typechain';
+	import { appConfig } from './config/app';
 	import { makoPaymasterAndDataMiddleware } from '../../middleware/makoShardPaymasterMiddleware';
 	import { getAddress } from 'ethers/lib/utils';
-	import type { AccountSigner } from '@alchemy/aa-ethers';
 
+	// Function for minting NFT
 	export let mintNFT: (
 		accountSigner: AccountSigner,
 		target: `0x${string}`,
 		tokenURI: TokenURI
 	) => Promise<any>;
+
+	// Variable declarations
 	let state: Web3Store;
 	let contract: MakoShard;
 	let balance = '0';
@@ -23,9 +33,8 @@
 
 	const loadContract = async () => {
 		if (!state.provider) return;
-		const _contract = MakoShard__factory.connect(appConfig.demoTokenToPayAddress, state.provider);
-		contract = _contract;
-		return _contract;
+		contract = MakoShard__factory.connect(appConfig.demoTokenToPayAddress, state.provider);
+		return contract;
 	};
 
 	const loadBalance = async () => {
@@ -52,11 +61,12 @@
 	};
 
 	// Helper function to approve TokenMaster to spend user's tokens
-	// Approve helper function
 	async function approveTokenMaster() {
 		if (!state.accountSigner) {
-			return console.log('no signer');
+			console.log('No account signer found');
+			return;
 		}
+
 		// Encode the approve function call
 		const approveData = MakoShard__factory.createInterface().encodeFunctionData('approve', [
 			appConfig.demoTokenPaymasterAddress,
@@ -64,17 +74,18 @@
 		]);
 
 		// Send the user operation
-		const tx = await state.accountSigner.sendUserOperation({
-			target: appConfig.demoTokenToPayAddress, // target is the token address
-			data: approveData as `0x${string}`, // callData is the encoded approve function call
-			value: 0n // signature is initially an empty string
+		const userOp = await state.accountSigner.sendUserOperation({
+			target: appConfig.demoTokenToPayAddress,
+			data: approveData as `0x${string}`,
+			value: 0n
 		});
-		console.log('🚀 ~ file: DisplayERC20.svelte:72 ~ tx:', tx);
+		console.log('Approval transaction sent', userOp);
 	}
 
 	async function mintNFTWithERC20GasPayment() {
 		if (!state.accountSigner || !state.provider || !state.smartAddress) {
-			return console.log('no signer');
+			console.log('No account signer found');
+			return;
 		}
 
 		const withPaymaster = state.accountSigner.withPaymasterMiddleware(
@@ -82,9 +93,10 @@
 		);
 
 		const nftTarget = getAddress(state.smartAddress) as `0x${string}`;
-		const tx = await mintNFT(withPaymaster, nftTarget, appConfig.tokenURI);
-		console.log('🚀 ~ tx:', tx);
+		const mintUserOp = await mintNFT(withPaymaster, nftTarget, appConfig.tokenURI);
+		console.log('Mint transaction sent', mintUserOp);
 	}
+
 	web3.subscribe(async (value) => {
 		state = value;
 		loading = true;
@@ -96,7 +108,7 @@
 				checkApproval();
 			}
 		});
-		contract?.on('Transfer', (from, to, amount) => {
+		contract?.on('Transfer', (from, to) => {
 			if (from === state.smartAddress || to === state.smartAddress) {
 				loadBalance();
 			}
@@ -110,7 +122,7 @@
 				checkApproval();
 			}
 		});
-		contract.off('Transfer', (from, to, amount) => {
+		contract.off('Transfer', (from, to) => {
 			if (from === state.smartAddress || to === state.smartAddress) {
 				loadBalance();
 			}
@@ -119,18 +131,18 @@
 </script>
 
 <section>
-	We require a single token, per transaction so that we will pay for your gas.
+	<h2>Mako Shards ~{balance}~</h2>
 	{#if state.isConnected}
-		<h2>Your MakoShard Balance: {balance}</h2>
 		<button class="button-primary" on:click={requestTokens} disabled={loading}>
-			Request Tokens
+			Request Shards
 		</button>
+		<p>You pay coin, I pay gas</p>
 		{#if !isMaxApproved}
 			<button class="button-primary" on:click={approveTokenMaster} disabled={isApproving}>
 				{#if isApproving}
 					Approving...
 				{:else}
-					Approve
+					Approve Shard Paymaster
 				{/if}
 			</button>
 		{:else}
@@ -139,7 +151,7 @@
 				on:click={mintNFTWithERC20GasPayment}
 				disabled={!state.address || balance == '0' || isApproving}
 			>
-				Mint NFT With Paymaster (MakoShard)
+				Mint Energy (ERC20 Payment)
 			</button>
 		{/if}
 	{:else}
@@ -148,6 +160,9 @@
 </section>
 
 <style>
+	h2 {
+		margin-top: 0;
+	}
 	button {
 		width: 100%;
 	}

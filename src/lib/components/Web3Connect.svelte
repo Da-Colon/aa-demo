@@ -34,11 +34,11 @@
 <section>
 	{#if state.isConnected && state.address && state.network}
 		<div class="address-container">
-			<p class="address-display">Network: {state.network.name}</p>
-			<p>EOA connected Account:</p>
+			<p class="address-display">Network Name {state.network.name}</p>
+			<p>Inject Wallet Address</p>
 			<AddressLink address={state.address} network={state.network.name} />
 			{#if state.smartAddress}
-				<p>Smart Account:</p>
+				<p>Mako Smart Wallet Address</p>
 				<AddressLink address={state.smartAddress} network={state.network.name} />
 			{/if}
 			<button class="button-web3 red" on:click={disconnect}>
@@ -59,7 +59,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 20px;
 		width: 12.5rem;
 		padding: 2rem;
 		border-radius: 8px;
@@ -74,7 +73,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: flex-start;
-		gap: 10px;
 		width: 100%;
 	}
 
@@ -102,6 +100,8 @@
 		background-color: var(--color-red-500);
 		color: var(--color-white);
 		padding: 4px 12px;
+		width: 100%;
+		margin-top: 16px;
 	}
 
 	.button-web3.red:hover {

@@ -52,19 +52,22 @@
 </script>
 
 <section>
-  {#if state.isConnected}
-    <h2>Your Mako Energy: {balance.toString()}</h2>
-    <div>
-      <img class="nft-image" src={tokenImageUrl} alt="ERC721" />
-    </div>
-  {:else}
-    <p>Please connect your wallet.</p>
-  {/if}
+	{#if state.isConnected}
+		<h2>Mako Energy ~{balance.toString()}~</h2>
+		<div>
+			<img class="nft-image" src={tokenImageUrl} alt="ERC721" />
+		</div>
+	{:else}
+		<p>Please connect your wallet.</p>
+	{/if}
 </section>
 
 <style>
-  .nft-image {
-    width: 50%;
-    height: auto;
-  }
+	h2 {
+		margin-top: 0;
+	}
+	.nft-image {
+		width: 55%;
+		height: auto;
+	}
 </style>
