@@ -1,26 +1,45 @@
 export const appConfig = {
-  // @todo add link when repo is public
+  // Alchemy API key
   // * Obtained from https://dashboard.alchemy.com/
   alchemyApiKey: import.meta.env.VITE_ALCHEMY_API_KEY as `0x${string}`,
+
+  // Base entry point address
   // @todo This should be removed, this should be able to be obtained from the smart account factory
   baseEntryPointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789' as `0x${string}`,
-  // Gas Policy ID, obtained from https://dashboard.alchemy.com/gasManager/
-  // @note Gas Policies much be created using same App ID as the Alchemy API key
-  // @note Gas Policies can also be programatically created using the Alchemy API
+
+  // Gas Policy ID
+  // @note Gas Policies must be created using same App ID as the Alchemy API key
+  // @note Gas Policies can also be programmatically created using the Alchemy API
+  // * Obtained from https://dashboard.alchemy.com/gasManager/
   // * https://docs.alchemy.com/reference/gas-manager-admin-api-quickstart
   gasPolicyId: import.meta.env.VITE_GAS_POLICY_ID,
-  // @todo add link when repo is public
-  nftAddress: '0x0962C095fF4af9d35D84918a4DD0711Fc8362Ff6' as `0x${string}`,
-	tokenURI: {
+
+  // NFT address
+  // @link https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/MakoEnergy.sol
+  nftAddress: '0x1a20e21B45996C8f155649F106E07dC20E01E3FA' as `0x${string}`,
+
+  // Token URI
+  tokenURI: {
     name: 'Mako Energy',
-		description:
-    'Mako Energy is a decentralized energy company that is building a new energy economy in Midgar.',
-		image: 'https://pin.ski/3PWwPOY'
-	},
-  smartAccountFactoryAddress: '0x6841B820CE95ffeb6600052F84EEAB4C7B7e3494' as `0x${string}`,
-  demoTokenToPayAddress: "0x1173149a0De9cb3Af230336F61430a5A81074146" as `0x${string}`,
-  demoTokenPaymasterAddress: "0x6A99110348Db821378a7F0D892132880dF4B1855" as `0x${string}`,
-  demoSubscriptionPaymasterAddress: "0x181Fe737C658ac37e1ce0d1a493273F17b7c0304" as `0x${string}`,
+    description: 'Mako Energy is a decentralized energy company that is building a new energy economy in Midgar.',
+    image: 'https://pin.ski/3PWwPOY'
+  },
+
+  // Smart Account Factory address
+  // https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/MakoAccount.sol
+  smartAccountFactoryAddress: '0x151650A6F510D04842940c82bf097Ce9cFbF7E6b' as `0x${string}`,
+
+  // Demo token pay address
+  // @link https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/MakoShard.sol
+  demoTokenToPayAddress: "0x166B6f2E8581e9c4539CDC996699b630E429F6bc" as `0x${string}`,
+
+  // Demo token paymaster address
+  // @link https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/TokenPaymaster.sol
+  demoTokenPaymasterAddress: "0x5aCD1cfafFB8A06b212E46DD2A9aC6c2a2399361" as `0x${string}`,
+
+  // Demo subscription paymaster address
+  // @link https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/SubscriptionPaymaster.sol
+  demoSubscriptionPaymasterAddress: "0x800d0E3DC9474Be14e47441EcBe37d06115612a2" as `0x${string}`,
 }
 
 export type TokenURI = {
@@ -28,4 +47,5 @@ export type TokenURI = {
   description: string;
   image: string;
 }
+
 export type AppConfig = typeof appConfig;
