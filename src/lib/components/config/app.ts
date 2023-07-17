@@ -27,7 +27,7 @@ export const appConfig = {
 
   // Smart Account Factory address
   // https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/MakoAccount.sol
-  smartAccountFactoryAddress: '0x151650A6F510D04842940c82bf097Ce9cFbF7E6b' as `0x${string}`,
+  smartAccountFactoryAddress: '0x203e65F8fE3Aa6b1bfC1aBF8b3bD4a14c4f731Ae' as `0x${string}`,
 
   // Demo token pay address
   // @link https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/MakoShard.sol
@@ -39,7 +39,7 @@ export const appConfig = {
 
   // Demo subscription paymaster address
   // @link https://github.com/Da-Colon/aa-demo-contracts/blob/main/contracts/SubscriptionPaymaster.sol
-  demoSubscriptionPaymasterAddress: "0x800d0E3DC9474Be14e47441EcBe37d06115612a2" as `0x${string}`,
+  demoSubscriptionPaymasterAddress: "0x7ae5f529caEf81093e42bf33c7819461Bc4208B9" as `0x${string}`,
 }
 
 export type TokenURI = {
