@@ -34,7 +34,7 @@
 <section>
 	{#if state.isConnected && state.address && state.network}
 		<div class="address-container">
-			<p class="address-display">Network Name {state.network.name}</p>
+			<p class="address-display">Network name ~{state.network.name}~</p>
 			<p>Inject Wallet Address</p>
 			<AddressLink address={state.address} network={state.network.name} />
 			{#if state.smartAddress}
@@ -52,20 +52,18 @@
 
 <style>
 	section {
-		position: fixed;
-		top: 20px;
-		right: 20px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: 12.5rem;
+		width: 575px;
+		font-size: small;
+		height: fit-content;
 		padding: 2rem;
 		border-radius: 8px;
 		border: 1px solid var(--color-gray-500);
 		box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 		background-color: var(--color-background);
-		z-index: 999;
 	}
 
 	.address-container {

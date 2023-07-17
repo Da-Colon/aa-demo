@@ -8,7 +8,6 @@
 	<div class="logo" data-text={logoText}>
 		{logoText}
 	</div>
-	<Web3Connect />
 </header>
 
 <style>
@@ -28,7 +27,7 @@
 		display: flex;
 		justify-content: space-between;
 		padding: 1rem 20px;
-		height: 6rem;
+		height: 4.25rem;
 	}
 
 	.logo {

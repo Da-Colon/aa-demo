@@ -10,6 +10,7 @@
 	import type { AccountSigner } from '@alchemy/aa-ethers';
 	import DisplayErc20 from '$lib/components/DisplayERC20.svelte';
 	import Subscription from '$lib/components/Subscription.svelte';
+	import Web3Connect from '$lib/components/Web3Connect.svelte';
 	let state: Web3Store;
 
 	web3.subscribe((value) => {
@@ -62,49 +63,62 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-	<Container>
-		<DisplayNft />
-	</Container>
-	<Container>
-		<DisplayErc20 {mintNFT} />
-	</Container>
-	<Container>
-		<section>
-			Mint and have gas sponsored by Alchemy. Say thank you to Alchemy!
-			<button
-				class="button-primary"
-				on:click={mintNFTWithGasSponsor}
-				disabled={!import.meta.env.VITE_GAS_POLICY_ID || !state.address}
-			>
-				Mint Energy (Gas Sponsored)
-			</button>
-		</section>
-	</Container>
-	<Container>
-		<section>
-			Old school way
-			<button class="button-primary" on:click={mintNFTWithInjectedWallet} disabled={!state.signer}>
-				Mint Energy (Injected Wallet)
-			</button>
-		</section>
-	</Container>
+<div class="page-wrapper">
+	<Web3Connect />
+	<section>
+		<Container>
+			<DisplayNft />
+		</Container>
+		<Container>
+			<DisplayErc20 {mintNFT} />
+		</Container>
+		<Container>
+			<section>
+				Mint and have gas sponsored by Alchemy. Say thank you to Alchemy!
+				<button
+					class="button-primary"
+					on:click={mintNFTWithGasSponsor}
+					disabled={!import.meta.env.VITE_GAS_POLICY_ID || !state.address}
+				>
+					Mint Energy (Gas Sponsored)
+				</button>
+			</section>
+		</Container>
+		<Container>
+			<section>
+				Old school way
+				<button
+					class="button-primary"
+					on:click={mintNFTWithInjectedWallet}
+					disabled={!state.signer}
+				>
+					Mint Energy (Injected Wallet)
+				</button>
+			</section>
+		</Container>
 
-	<Container>
-		<Subscription {mintNFT} />
-	</Container>
-</section>
+		<Container>
+			<Subscription {mintNFT} />
+		</Container>
+	</section>
+</div>
 
 <style>
+	.page-wrapper {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		gap: 2rem;
+	}
 	section {
 		display: flex;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: space-around;
 		flex-wrap: wrap;
 		gap: 2.5rem;
 		color: var(--color-white);
 	}
 	section section {
-		gap: 0.5rem
+		gap: 0.5rem;
 	}
 </style>
