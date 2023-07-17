@@ -23,7 +23,7 @@ import type {
   PromiseOrValue,
 } from "../common";
 
-export interface SmartAccountFactoryInterface extends utils.Interface {
+export interface MakoAccountFactoryInterface extends utils.Interface {
   functions: {
     "accountImplementation()": FunctionFragment;
     "createAccount(address,uint256)": FunctionFragment;
@@ -63,12 +63,12 @@ export interface SmartAccountFactoryInterface extends utils.Interface {
   events: {};
 }
 
-export interface SmartAccountFactory extends BaseContract {
+export interface MakoAccountFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SmartAccountFactoryInterface;
+  interface: MakoAccountFactoryInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

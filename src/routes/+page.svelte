@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Container from '$lib/components/Container.svelte';
 	import { web3 } from '$lib/stores/web3';
-	import { DemoNFT__factory } from '../typechain';
+	import { MakoEnergy__factory } from '../typechain';
 	import type { Web3Store } from '$lib/types';
 	import { alchemyPaymasterAndDataMiddleware } from '@alchemy/aa-alchemy';
 	import { appConfig, type TokenURI } from '$lib/components/config/app';
@@ -18,7 +18,7 @@
 
 	// Mint NFT helper function
 	async function mintNFT(accountSigner: AccountSigner, target: `0x${string}`, tokenURI: TokenURI) {
-		const txData = DemoNFT__factory.createInterface().encodeFunctionData('mintEnergy', [
+		const txData = MakoEnergy__factory.createInterface().encodeFunctionData('mintEnergy', [
 			target,
 			JSON.stringify(tokenURI)
 		]);
@@ -49,7 +49,7 @@
 
 	async function mintNFTWithInjectedWallet() {
 		if (!state.signer || !state.smartAddress) return console.log('no signer');
-		const nftContract = DemoNFT__factory.connect(appConfig.nftAddress, state.signer);
+		const nftContract = MakoEnergy__factory.connect(appConfig.nftAddress, state.signer);
 		const tx = await nftContract.mintEnergy(state.smartAddress, JSON.stringify(appConfig.tokenURI));
 		tx.wait();
 		console.log('🚀 ~ file: +page.svelte:58 ~ tx:', tx);

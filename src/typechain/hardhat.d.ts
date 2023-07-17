@@ -177,29 +177,29 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UniswapHelper__factory>;
     getContractFactory(
-      name: "DemoNFT",
+      name: "MakoAccount",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.DemoNFT__factory>;
+    ): Promise<Contracts.MakoAccount__factory>;
     getContractFactory(
-      name: "TokenPaymaster",
+      name: "MakoAccountFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TokenPaymaster__factory>;
+    ): Promise<Contracts.MakoAccountFactory__factory>;
+    getContractFactory(
+      name: "MakoEnergy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MakoEnergy__factory>;
     getContractFactory(
       name: "MakoShard",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MakoShard__factory>;
     getContractFactory(
-      name: "SmartAccountFactory",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SmartAccountFactory__factory>;
-    getContractFactory(
-      name: "SmartAccountImpl",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SmartAccountImpl__factory>;
-    getContractFactory(
       name: "SubscriptionPaymaster",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SubscriptionPaymaster__factory>;
+    getContractFactory(
+      name: "TokenPaymaster",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TokenPaymaster__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -407,35 +407,35 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.UniswapHelper>;
     getContractAt(
-      name: "DemoNFT",
+      name: "MakoAccount",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.DemoNFT>;
+    ): Promise<Contracts.MakoAccount>;
     getContractAt(
-      name: "TokenPaymaster",
+      name: "MakoAccountFactory",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.TokenPaymaster>;
+    ): Promise<Contracts.MakoAccountFactory>;
+    getContractAt(
+      name: "MakoEnergy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MakoEnergy>;
     getContractAt(
       name: "MakoShard",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MakoShard>;
     getContractAt(
-      name: "SmartAccountFactory",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SmartAccountFactory>;
-    getContractAt(
-      name: "SmartAccountImpl",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SmartAccountImpl>;
-    getContractAt(
       name: "SubscriptionPaymaster",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SubscriptionPaymaster>;
+    getContractAt(
+      name: "TokenPaymaster",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TokenPaymaster>;
 
     // default types
     getContractFactory(

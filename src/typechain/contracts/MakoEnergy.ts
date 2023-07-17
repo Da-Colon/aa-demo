@@ -27,7 +27,7 @@ import type {
   PromiseOrValue,
 } from "../common";
 
-export interface DemoNFTInterface extends utils.Interface {
+export interface MakoEnergyInterface extends utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -236,12 +236,12 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
-export interface DemoNFT extends BaseContract {
+export interface MakoEnergy extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: DemoNFTInterface;
+  interface: MakoEnergyInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

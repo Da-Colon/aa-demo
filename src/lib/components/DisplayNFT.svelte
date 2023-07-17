@@ -4,10 +4,10 @@
 	import { web3 } from '$lib/stores/web3';
 	import type { Web3Store } from '$lib/types';
 	import { appConfig } from './config/app';
-	import { DemoNFT__factory, type DemoNFT } from '../../typechain';
+	import { MakoEnergy__factory, type MakoEnergy } from '../../typechain';
 
 	let state: Web3Store;
-	let contract: DemoNFT;
+	let contract: MakoEnergy;
 	let balance = BigNumber.from(0);
 	let loading = true;
 
@@ -15,7 +15,7 @@
 
 	const loadContract = async () => {
 		if (!state.provider) return;
-		const _contract = DemoNFT__factory.connect(appConfig.nftAddress, state.provider);
+		const _contract = MakoEnergy__factory.connect(appConfig.nftAddress, state.provider);
 		contract = _contract;
 		return _contract;
 	};

@@ -68,7 +68,7 @@ export type UserOperationStructOutput = [
   signature: string;
 };
 
-export declare namespace SmartAccountImpl {
+export declare namespace MakoAccount {
   export type SubscriptionStruct = {
     recipient: PromiseOrValue<string>;
     token: PromiseOrValue<string>;
@@ -95,7 +95,7 @@ export declare namespace SmartAccountImpl {
   };
 }
 
-export interface SmartAccountImplInterface extends utils.Interface {
+export interface MakoAccountInterface extends utils.Interface {
   functions: {
     "activeSubscription()": FunctionFragment;
     "addDeposit()": FunctionFragment;
@@ -110,7 +110,7 @@ export interface SmartAccountImplInterface extends utils.Interface {
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
-    "processSubscription()": FunctionFragment;
+    "processSubscription((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "subscribeAndActivate(address,address)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -218,7 +218,7 @@ export interface SmartAccountImplInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "processSubscription",
-    values?: undefined
+    values: [UserOperationStruct, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
@@ -437,12 +437,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface SmartAccountImpl extends BaseContract {
+export interface MakoAccount extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SmartAccountImplInterface;
+  interface: MakoAccountInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -503,8 +503,8 @@ export interface SmartAccountImpl extends BaseContract {
     getSubscription(
       overrides?: CallOverrides
     ): Promise<
-      [SmartAccountImpl.SubscriptionStructOutput] & {
-        subscription: SmartAccountImpl.SubscriptionStructOutput;
+      [MakoAccount.SubscriptionStructOutput] & {
+        subscription: MakoAccount.SubscriptionStructOutput;
       }
     >;
 
@@ -542,6 +542,8 @@ export interface SmartAccountImpl extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     processSubscription(
+      userOp: UserOperationStruct,
+      userOpHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -635,7 +637,7 @@ export interface SmartAccountImpl extends BaseContract {
 
   getSubscription(
     overrides?: CallOverrides
-  ): Promise<SmartAccountImpl.SubscriptionStructOutput>;
+  ): Promise<MakoAccount.SubscriptionStructOutput>;
 
   initialize(
     anOwner: PromiseOrValue<string>,
@@ -671,6 +673,8 @@ export interface SmartAccountImpl extends BaseContract {
   owner(overrides?: CallOverrides): Promise<string>;
 
   processSubscription(
+    userOp: UserOperationStruct,
+    userOpHash: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -762,7 +766,7 @@ export interface SmartAccountImpl extends BaseContract {
 
     getSubscription(
       overrides?: CallOverrides
-    ): Promise<SmartAccountImpl.SubscriptionStructOutput>;
+    ): Promise<MakoAccount.SubscriptionStructOutput>;
 
     initialize(
       anOwner: PromiseOrValue<string>,
@@ -797,7 +801,11 @@ export interface SmartAccountImpl extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    processSubscription(overrides?: CallOverrides): Promise<void>;
+    processSubscription(
+      userOp: UserOperationStruct,
+      userOpHash: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -967,6 +975,8 @@ export interface SmartAccountImpl extends BaseContract {
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     processSubscription(
+      userOp: UserOperationStruct,
+      userOpHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1086,6 +1096,8 @@ export interface SmartAccountImpl extends BaseContract {
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     processSubscription(
+      userOp: UserOperationStruct,
+      userOpHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

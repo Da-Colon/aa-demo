@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BigNumber, ethers } from 'ethers';
+	import { ethers } from 'ethers';
 	import { onDestroy } from 'svelte';
 	import { web3 } from '$lib/stores/web3';
 	import type { Web3Store } from '$lib/types';

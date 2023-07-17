@@ -6,8 +6,8 @@
 	import {
 		MakoShard__factory,
 		type MakoShard,
-		SmartAccountImpl__factory,
-		type SmartAccountImpl
+		MakoAccount__factory,
+		type MakoAccount
 	} from '../../typechain';
 	import { appConfig, type TokenURI } from './config/app';
 	import { getAddress } from 'ethers/lib/utils';
@@ -23,7 +23,7 @@
 
 	let state: Web3Store;
 	let contract: MakoShard;
-	let smartAccountContract: SmartAccountImpl;
+	let smartAccountContract: MakoAccount;
 
 	let isApproved = false;
 	let isSubscribed = false;
@@ -38,7 +38,7 @@
 
 	const loadSmartAccountContract = async () => {
 		if (!state.provider || !state.smartAddress) return;
-		const _smartAccountContract = SmartAccountImpl__factory.connect(
+		const _smartAccountContract = MakoAccount__factory.connect(
 			state.smartAddress,
 			state.provider
 		);
@@ -108,7 +108,7 @@
 		const token = appConfig.demoTokenToPayAddress; // The token address should be provided here
 
 		// Encode the subscribeAndActivate function call
-		const subscribeData = SmartAccountImpl__factory.createInterface().encodeFunctionData(
+		const subscribeData = MakoAccount__factory.createInterface().encodeFunctionData(
 			'subscribeAndActivate',
 			[recipient, token]
 		);
