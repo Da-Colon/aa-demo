@@ -92,12 +92,19 @@ body {
   cursor: pointer;
   border-radius: 5px;
   max-width: 325px;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition */
+}
+
+.button-primary:hover {
+  background-color: var(--color-green-900-faded); /* Darker green on hover */
+  transform: scale(1.02); /* Slightly larger on hover */
 }
 
 .button-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 
 .flex-col {
   display: flex;
