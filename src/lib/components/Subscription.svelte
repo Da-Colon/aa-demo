@@ -145,9 +145,9 @@
 		if (!web3State.accountSigner || !web3State.provider || !web3State.smartAddress) {
 			return console.log('No account signer');
 		}
-
+		const currentBlockNumber = await web3State.provider.getBlockNumber();
 		const withPaymaster = web3State.accountSigner.withPaymasterMiddleware(
-			subscriptionPaymasterAndDataMiddleware
+			subscriptionPaymasterAndDataMiddleware(currentBlockNumber, web3State.smartAddress)
 		);
 
 		const nftTarget = getAddress(web3State.smartAddress) as `0x${string}`;
